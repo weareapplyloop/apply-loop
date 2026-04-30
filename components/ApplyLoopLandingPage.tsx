@@ -912,7 +912,7 @@ export default function ApplyLoopLandingPage() {
           className="flex w-max items-center gap-5 sm:gap-8"
           animate={{ x: ["0%", "-50%"] }}
           transition={{
-            duration: 24,
+            duration: 120,
             repeat: Number.POSITIVE_INFINITY,
             ease: "linear",
           }}
