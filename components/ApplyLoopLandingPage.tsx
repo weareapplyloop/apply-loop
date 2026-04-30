@@ -25,9 +25,9 @@ import {
   Wand2,
   X,
 } from "lucide-react";
-import { Poppins } from "next/font/google";
+import { Inter } from "next/font/google";
 
-const poppins = Poppins({
+const inter = Inter({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
   display: "swap",
@@ -85,12 +85,12 @@ const footerLinks = [
 const whatWeDo: FeatureItem[] = [
   {
     title: "Optimize Resume",
-    desc: "ATS-friendly and recruiter-approved to increase your chances of getting noticed.",
+    desc: "ATS-friendly and recruiter-approved to help you get noticed faster.",
     icon: FileSearch,
   },
   {
     title: "Job Application",
-    desc: "Personalized applications sent daily based on your goals.",
+    desc: "Personalized applications are sent based on your goals and preferences.",
     icon: Briefcase,
   },
   {
@@ -116,29 +116,29 @@ const testimonials: Testimonial[] = Array.from({ length: 8 }, (_, index) => ({
   role: "UX Designer",
   quote:
     index % 2 === 0
-      ? "It has been helpful in providing our Biz Dev team contacts to pursue. The thing I like best is the fantastic support that I get from Mike Fister. He is always available or responds within a short time, communicates happily and well and is very knowledgeable."
-      : "Applyloop helped reduce the stress of applying. The support was responsive, clear, and practical, and the process felt much more organized from resume updates to interview preparation.",
+      ? "ApplyLoop gave my job search structure, better positioning, and a clearer application rhythm. The support was fast and practical."
+      : "ApplyLoop helped reduce the stress of applying. The process felt organized from resume updates to interview preparation.",
 }));
 
 const faqs: FaqItem[] = [
   {
     q: "How does Applyloop work?",
-    a: "Applyloop starts with a quick consultation, aligns your goals, optimizes your application materials, and then manages tailored submissions on your behalf.",
+    a: "Applyloop starts with a quick consultation, aligns your goals, and optimizes your application materials. Then tailored submissions begin on your behalf.",
     tone: "bg-[#3560d2]",
   },
   {
     q: "Will I still have control over my job applications?",
-    a: "Yes. You stay in control of your preferences, target roles, and final direction while Applyloop handles the heavy lifting.",
+    a: "Yes. You stay in control of your preferences and target roles while Applyloop handles the heavy lifting.",
     tone: "bg-[#f1ab5a] text-white",
   },
   {
     q: "Are the applications customized for each job?",
-    a: "Yes. Every application is tailored for the role, using optimized keywords, recruiter-friendly positioning, and context-specific edits.",
+    a: "Yes. Every application is tailored with optimized keywords and recruiter-friendly positioning.",
     tone: "bg-[#102f67]",
   },
   {
     q: "How many jobs will you apply to for me?",
-    a: "This depends on your subscription plan. Each plan includes a set number of applications per week, which you can adjust or upgrade anytime.",
+    a: "This depends on your subscription plan. Each plan includes a set number of applications per week.",
     tone: "bg-[#6f9de8]",
     active: true,
   },
@@ -247,41 +247,6 @@ function Rule({ width }: { width: string }) {
   );
 }
 
-function PreviewItem({
-  title,
-  icon: Icon,
-  iconTone,
-}: {
-  title: string;
-  icon: IconType;
-  iconTone: string;
-}) {
-  return (
-    <div className="rounded-[20px] border border-[#1a2f59] bg-[linear-gradient(180deg,rgba(15,24,48,0.98),rgba(12,19,39,0.96))] px-6 py-7 shadow-[0_28px_70px_-38px_rgba(28,55,122,0.9)]">
-      <div className="flex items-start gap-4">
-        <div
-          className={[
-            "mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px]",
-            iconTone,
-          ].join(" ")}
-        >
-          <Icon className="h-5 w-5" />
-        </div>
-        <div className="min-w-0 flex-1">
-          <div className="text-[1.05rem] font-semibold tracking-[-0.02em] text-white sm:text-[1.2rem]">
-            {title}
-          </div>
-          <div className="mt-6 space-y-4">
-            <Rule width="w-[72%]" />
-            <Rule width="w-[94%]" />
-            <Rule width="w-[89%]" />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function HeroPreviewCard() {
   return (
     <div className="mx-auto max-w-[860px] rounded-[12px] border border-[#1b2e5a] bg-[linear-gradient(180deg,rgba(14,22,44,0.96),rgba(12,19,39,0.94))] p-3 shadow-[0_24px_60px_-36px_rgba(39,80,185,0.85)] sm:p-4">
@@ -349,7 +314,9 @@ function FeatureCard({ item, dark }: { item: FeatureItem; dark: boolean }) {
     <div
       className={[
         "rounded-[14px] border px-5 py-5 shadow-[0_18px_40px_-28px_rgba(0,0,0,0.6)] backdrop-blur-sm",
-        dark ? "border-white/10 bg-[#16357f]/42" : "border-[#cfe0ff] bg-[#f7faff]",
+        dark
+          ? "border-white/10 bg-[#16357f]/42"
+          : "border-[#cfe0ff] bg-[#f7faff]",
       ].join(" ")}
     >
       <div
@@ -382,190 +349,192 @@ function FeatureCard({ item, dark }: { item: FeatureItem; dark: boolean }) {
 
 function SearchIllustration() {
   return (
-    <div className="relative mx-auto h-[260px] w-full max-w-[360px] scale-95 sm:h-[340px] sm:max-w-[430px] sm:scale-100 lg:mx-0">
-      <motion.div
-        animate={{ y: [0, -8, 0] }}
-        transition={{
-          duration: 4.8,
-          repeat: Number.POSITIVE_INFINITY,
-          ease: "easeInOut",
-        }}
-        className="absolute right-[5%] top-[10%] h-[56px] w-[120px] rounded-[14px] bg-[#f0b565] px-4 py-3 text-white shadow-[0_18px_40px_-20px_rgba(0,0,0,0.5)] sm:h-[62px] sm:w-[132px]"
-      >
-        <div className="h-[10px] w-[10px] rounded-full border border-white/70" />
-        <div className="mt-3 h-[2px] w-[74px] rounded-full bg-white/80" />
-        <div className="mt-2 h-[2px] w-[88px] rounded-full bg-white/50" />
-      </motion.div>
-
-      <motion.div
-        animate={{ y: [0, 8, 0] }}
-        transition={{
-          duration: 5.1,
-          repeat: Number.POSITIVE_INFINITY,
-          ease: "easeInOut",
-          delay: 0.4,
-        }}
-        className="absolute left-[4%] top-[48%] h-[54px] w-[132px] rounded-full bg-[#73beff] px-4 py-3 shadow-[0_18px_40px_-22px_rgba(0,0,0,0.45)] sm:left-[7%] sm:top-[39%] sm:h-[58px] sm:w-[136px]"
-      >
-        <div className="flex items-center gap-2">
-          <div className="h-4 w-4 rounded-full bg-white/90" />
-          <div className="h-[2px] w-[60px] rounded-full bg-white/85" />
-        </div>
-        <div className="mt-2 h-[2px] w-[74px] rounded-full bg-white/55" />
-      </motion.div>
-
-      <motion.div
-        animate={{ y: [0, -5, 0] }}
-        transition={{
-          duration: 4.3,
-          repeat: Number.POSITIVE_INFINITY,
-          ease: "easeInOut",
-          delay: 0.8,
-        }}
-        className="absolute right-[2%] top-[72%] h-[22px] w-[74px] rounded-full bg-[#ef89c7] px-4 py-2 shadow-[0_12px_28px_-18px_rgba(0,0,0,0.45)] sm:right-0 sm:top-[53%]"
-      >
-        <div className="h-[2px] w-[36px] rounded-full bg-white/80" />
-      </motion.div>
-
-      <motion.div
-        animate={{ y: [0, -6, 0], rotate: [0, 1.5, 0] }}
-        transition={{
-          duration: 5.3,
-          repeat: Number.POSITIVE_INFINITY,
-          ease: "easeInOut",
-        }}
-        className="absolute left-1/2 top-[30%] h-[130px] w-[130px] -translate-x-1/2 rounded-full border-[8px] border-[#2c5cc4] bg-[radial-gradient(circle_at_50%_45%,rgba(185,218,255,0.9),rgba(136,182,255,0.95)_62%,rgba(75,125,230,1)_100%)] shadow-[0_24px_50px_-25px_rgba(0,0,0,0.55)] sm:top-[27%] sm:h-[150px] sm:w-[150px]"
-      >
-        <div className="absolute inset-[13px] rounded-full border border-white/20 bg-[radial-gradient(circle_at_48%_40%,rgba(255,255,255,0.92),rgba(202,224,255,0.84)_45%,rgba(111,158,244,0.95)_100%)]">
-          <div className="absolute left-1/2 top-1/2 h-8 w-8 -translate-x-1/2 -translate-y-[74%] rounded-full bg-[#7fa6f3]" />
-          <div className="absolute bottom-[23%] left-1/2 h-11 w-[56px] -translate-x-1/2 rounded-t-[999px] rounded-b-[20px] bg-[#8ab0fb]" />
-        </div>
-      </motion.div>
-
-      <motion.div
-        animate={{ rotate: [40, 44, 40] }}
-        transition={{
-          duration: 4.6,
-          repeat: Number.POSITIVE_INFINITY,
-          ease: "easeInOut",
-        }}
-        className="absolute left-[57%] top-[68%] h-[72px] w-[18px] rounded-full bg-[#173b88] shadow-[0_14px_26px_-16px_rgba(0,0,0,0.75)] sm:left-[214px] sm:top-[214px] sm:h-[86px] sm:w-[20px]"
-        style={{ transformOrigin: "top center" }}
+    function SearchIllustration() {
+  return (
+    <div className="relative mx-auto w-full max-w-[420px] lg:mx-0 lg:max-w-[460px]">
+      <img
+        src="/what-we-do-image.png"
+        alt="Magnifying glass profile search illustration"
+        className="h-auto w-full object-contain"
       />
     </div>
   );
 }
+  );
+}
 
-function StepCard({
+function ProcessCard({
   title,
   icon: Icon,
   className = "",
+  style,
 }: {
   title: string;
   icon: IconType;
   className?: string;
+  style?: React.CSSProperties;
 }) {
   return (
     <div
+      style={style}
       className={[
-        "rounded-[12px] border border-[#1d3c80] bg-[linear-gradient(180deg,rgba(16,38,92,0.92),rgba(13,31,77,0.9))] px-4 py-4 shadow-[0_24px_50px_-30px_rgba(0,0,0,0.7)]",
+        "absolute z-10 flex h-[72px] w-[230px] items-center gap-3 rounded-[8px]",
+        "border border-[#20458a]",
+        "bg-[linear-gradient(180deg,rgba(22,49,115,0.98),rgba(14,33,80,0.98))]",
+        "px-4 shadow-[0_18px_34px_-24px_rgba(0,0,0,0.72)]",
         className,
       ].join(" ")}
     >
-      <div className="flex items-center gap-3">
-        <div className="h-12 w-4 rounded-full bg-[#2f60e1]" />
-        <div className="flex h-8 w-8 items-center justify-center rounded-[8px] bg-[#2d5ee0] text-white">
-          <Icon className="h-4 w-4" />
-        </div>
+      <div className="h-[40px] w-[12px] shrink-0 rounded-full bg-[#2f66ee]" />
+
+      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[7px] bg-[#3b70f4] text-white">
+        <Icon className="h-3.5 w-3.5" />
       </div>
-      <div className="mt-3 text-[15px] font-medium text-white/92">{title}</div>
+
+      <div className="text-[13px] font-medium leading-none text-white">
+        {title}
+      </div>
     </div>
   );
 }
 
 function HowItWorksSection() {
-  const steps = [
-    { title: "Schedule a call", icon: CalendarDays },
-    { title: "Select a package", icon: Package },
-    { title: "Preference Disclosure", icon: ClipboardList },
-    { title: "Application Begins", icon: Briefcase },
-  ];
-
   return (
-    <div className="grid items-start gap-10 lg:grid-cols-[minmax(300px,420px)_1fr] lg:gap-12 xl:grid-cols-[390px_1fr] xl:gap-16">
-      <div className="max-w-[420px]">
-        <div className="text-sm font-semibold uppercase tracking-[0.08em] text-[#7da8ff]">
-          How It Works
-        </div>
-        <h2 className="mt-4 text-4xl font-semibold leading-[1.02] tracking-tight text-white sm:text-5xl lg:text-[4.1rem]">
-          We handle the hard part so you can focus on showing up strong.
-        </h2>
-        <p className="mt-5 max-w-[320px] text-sm leading-7 text-white/72 sm:text-[15px]">
-          Your search gets a system: cleaner positioning, more relevant
-          applications, and support when interviews start landing.
-        </p>
-      </div>
+    <div className="relative overflow-hidden bg-[linear-gradient(90deg,#0a2865_0%,#08245c_45%,#071b3d_100%)]">
+      <div className="absolute inset-x-0 top-0 h-[2px] bg-[#2d83ff]" />
 
-      <div className="lg:hidden">
-        <div className="space-y-4 pt-2">
-          {steps.map((step, index) => (
-            <div key={step.title} className="relative">
-              <StepCard title={step.title} icon={step.icon} />
-              {index < steps.length - 1 ? (
-                <div className="mx-auto h-6 w-px bg-white/20" />
-              ) : null}
+      <div className="mx-auto max-w-[1120px] px-5 py-12 sm:px-8 lg:px-12 lg:py-14">
+        <div className="max-w-[420px]">
+          <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#7fb1ff]">
+            HOW IT WORKS
+          </div>
+
+          <h2 className="mt-3 text-[28px] font-semibold leading-[1.08] tracking-[-0.03em] text-white sm:text-[34px]">
+            We handle the hard part so you can focus on showing up strong.
+          </h2>
+
+          <p className="mt-4 max-w-[400px] text-[14px] leading-7 text-white/78">
+            Your search gets a system: cleaner positioning, more relevant
+            applications, and support when interviews start landing.
+          </p>
+        </div>
+
+        {/* Mobile */}
+        <div className="mt-10 space-y-4 lg:hidden">
+          <div className="relative">
+            <div className="relative flex h-[72px] items-center gap-3 rounded-[8px] border border-[#20458a] bg-[linear-gradient(180deg,rgba(22,49,115,0.98),rgba(14,33,80,0.98))] px-4 shadow-[0_18px_34px_-24px_rgba(0,0,0,0.72)]">
+              <div className="h-[40px] w-[12px] shrink-0 rounded-full bg-[#2f66ee]" />
+              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[7px] bg-[#3b70f4] text-white">
+                <CalendarDays className="h-3.5 w-3.5" />
+              </div>
+              <div className="text-[13px] font-medium leading-none text-white">
+                Schedule a call
+              </div>
             </div>
-          ))}
+          </div>
+
+          <div className="mx-auto h-5 w-px border-l border-dashed border-[#3c84ff]/70" />
+
+          <div className="relative">
+            <div className="relative flex h-[72px] items-center gap-3 rounded-[8px] border border-[#20458a] bg-[linear-gradient(180deg,rgba(22,49,115,0.98),rgba(14,33,80,0.98))] px-4 shadow-[0_18px_34px_-24px_rgba(0,0,0,0.72)]">
+              <div className="h-[40px] w-[12px] shrink-0 rounded-full bg-[#2f66ee]" />
+              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[7px] bg-[#3b70f4] text-white">
+                <Package className="h-3.5 w-3.5" />
+              </div>
+              <div className="text-[13px] font-medium leading-none text-white">
+                Select a package
+              </div>
+            </div>
+          </div>
+
+          <div className="mx-auto h-5 w-px border-l border-dashed border-[#3c84ff]/70" />
+
+          <div className="relative">
+            <div className="relative flex h-[72px] items-center gap-3 rounded-[8px] border border-[#20458a] bg-[linear-gradient(180deg,rgba(22,49,115,0.98),rgba(14,33,80,0.98))] px-4 shadow-[0_18px_34px_-24px_rgba(0,0,0,0.72)]">
+              <div className="h-[40px] w-[12px] shrink-0 rounded-full bg-[#2f66ee]" />
+              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[7px] bg-[#3b70f4] text-white">
+                <ClipboardList className="h-3.5 w-3.5" />
+              </div>
+              <div className="text-[13px] font-medium leading-none text-white">
+                Preference Disclosure
+              </div>
+            </div>
+          </div>
+
+          <div className="mx-auto h-5 w-px border-l border-dashed border-[#3c84ff]/70" />
+
+          <div className="relative">
+            <div className="relative flex h-[72px] items-center gap-3 rounded-[8px] border border-[#20458a] bg-[linear-gradient(180deg,rgba(22,49,115,0.98),rgba(14,33,80,0.98))] px-4 shadow-[0_18px_34px_-24px_rgba(0,0,0,0.72)]">
+              <div className="h-[40px] w-[12px] shrink-0 rounded-full bg-[#2f66ee]" />
+              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[7px] bg-[#3b70f4] text-white">
+                <Briefcase className="h-3.5 w-3.5" />
+              </div>
+              <div className="text-[13px] font-medium leading-none text-white">
+                Application Begins
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <div className="relative hidden min-h-[560px] w-full lg:block xl:min-h-[620px]">
-        <svg
-          className="absolute inset-0 h-full w-full"
-          viewBox="0 0 860 620"
-          fill="none"
-          aria-hidden="true"
-        >
-          <path
-            d="M170 115 H560 V205"
-            stroke="rgba(111,158,255,0.62)"
-            strokeWidth="2"
-            strokeDasharray="8 8"
-          />
-          <path
-            d="M560 235 H210 V352"
-            stroke="rgba(111,158,255,0.62)"
-            strokeWidth="2"
-            strokeDasharray="8 8"
-          />
-          <path
-            d="M320 468 H660 V548"
-            stroke="rgba(111,158,255,0.62)"
-            strokeWidth="2"
-            strokeDasharray="8 8"
-          />
-        </svg>
+        {/* Desktop locked layout */}
+        <div className="relative mt-10 hidden lg:block">
+          <div className="relative h-[340px] w-[770px]">
+            <svg
+              className="absolute inset-0 h-full w-full"
+              viewBox="0 0 770 340"
+              fill="none"
+              aria-hidden="true"
+            >
+              {/* schedule -> select */}
+              <path
+                d="M230 36 H420 V108 H540"
+                stroke="rgba(63,139,255,0.72)"
+                strokeWidth="2"
+                strokeDasharray="6 8"
+              />
 
-        <StepCard
-          title="Schedule a call"
-          icon={CalendarDays}
-          className="absolute left-0 top-[40px] w-[245px] xl:w-[270px]"
-        />
-        <StepCard
-          title="Select a package"
-          icon={Package}
-          className="absolute right-[50px] top-[180px] w-[245px] xl:right-[30px] xl:w-[270px]"
-        />
-        <StepCard
-          title="Preference Disclosure"
-          icon={ClipboardList}
-          className="absolute left-[90px] top-[330px] w-[245px] xl:left-[110px] xl:w-[270px]"
-        />
-        <StepCard
-          title="Application Begins"
-          icon={Briefcase}
-          className="absolute right-0 bottom-[30px] w-[245px] xl:right-[10px] xl:w-[270px]"
-        />
+              {/* select -> preference */}
+              <path
+                d="M540 144 H420 V204 H230"
+                stroke="rgba(63,139,255,0.72)"
+                strokeWidth="2"
+                strokeDasharray="6 8"
+              />
+
+              {/* preference -> application */}
+              <path
+                d="M230 240 H420 V300 H540"
+                stroke="rgba(63,139,255,0.72)"
+                strokeWidth="2"
+                strokeDasharray="6 8"
+              />
+            </svg>
+
+            <ProcessCard
+              title="Schedule a call"
+              icon={CalendarDays}
+              style={{ left: 0, top: 0 }}
+            />
+
+            <ProcessCard
+              title="Select a package"
+              icon={Package}
+              style={{ left: 540, top: 108 }}
+            />
+
+            <ProcessCard
+              title="Preference Disclosure"
+              icon={ClipboardList}
+              style={{ left: 0, top: 204 }}
+            />
+
+            <ProcessCard
+              title="Application Begins"
+              icon={Briefcase}
+              style={{ left: 540, top: 268 }}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -597,17 +566,20 @@ function TestimonialCard({ item }: { item: Testimonial }) {
 function TestimonialRow({
   items,
   duration = 34,
+  direction = "rtl",
 }: {
   items: Testimonial[];
   duration?: number;
+  direction?: "rtl" | "ltr";
 }) {
-  const loop = [...items, ...items];
+  const loop = [...items, ...items, ...items, ...items];
+  const x = direction === "rtl" ? ["0%", "-50%"] : ["-50%", "0%"];
 
   return (
-    <div className="overflow-hidden">
+    <div className="w-full overflow-hidden">
       <motion.div
-        className="flex gap-3 sm:gap-4"
-        animate={{ x: ["-50%", "0%"] }}
+        className="flex w-max gap-3 sm:gap-4"
+        animate={{ x }}
         transition={{
           duration,
           repeat: Number.POSITIVE_INFINITY,
@@ -625,19 +597,25 @@ function TestimonialRow({
 function FAQCard({ item, index }: { item: FaqItem; index: number }) {
   return (
     <div
+      tabIndex={0}
       className={[
-        "px-5 py-4 text-white sm:px-6",
+        "group cursor-pointer px-5 py-4 text-white transition-all duration-300 sm:px-6",
         item.tone,
-        item.active ? "rounded-b-[18px] pb-8 sm:pb-16" : "-mb-1",
-        index === 0 ? "rounded-t-[18px]" : "",
+        index === 0 ? "rounded-t-[18px]" : "-mt-1",
+        index === 3 ? "rounded-b-[18px]" : "",
+        "hover:pb-8 focus:pb-8 sm:hover:pb-12 sm:focus:pb-12",
       ].join(" ")}
     >
-      <div className="text-sm font-medium">{item.q}</div>
-      {item.active ? (
-        <p className="mt-3 max-w-[34rem] text-xs leading-6 text-white/90">
-          {item.a}
-        </p>
-      ) : null}
+      <div className="flex items-center justify-between gap-4">
+        <div className="text-sm font-medium">{item.q}</div>
+        <span className="text-lg leading-none text-white/80 transition-transform duration-300 group-hover:rotate-45 group-focus:rotate-45">
+          +
+        </span>
+      </div>
+
+      <p className="max-h-0 overflow-hidden text-xs leading-6 text-white/90 opacity-0 transition-all duration-300 group-hover:mt-3 group-hover:max-h-32 group-hover:opacity-100 group-focus:mt-3 group-focus:max-h-32 group-focus:opacity-100">
+        {item.a}
+      </p>
     </div>
   );
 }
@@ -713,6 +691,7 @@ function CtaDecoration({
 export default function ApplyLoopLandingPage() {
   const [dark, setDark] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeFaq, setActiveFaq] = useState(0);
 
   const page = dark ? "bg-[#06142b] text-white" : "bg-[#edf4ff] text-[#12305e]";
   const muted = dark ? "text-white/70" : "text-[#3c5d91]";
@@ -722,11 +701,11 @@ export default function ApplyLoopLandingPage() {
   const heroBg = dark
     ? "bg-[radial-gradient(circle_at_top,rgba(46,90,255,0.18),transparent_32%),linear-gradient(180deg,#071327_0%,#061326_55%,#091a36_100%)]"
     : "bg-[radial-gradient(circle_at_top,rgba(92,133,255,0.22),transparent_36%),linear-gradient(180deg,#f7faff_0%,#eef4ff_52%,#e5efff_100%)]";
-  const blueSection = dark
-    ? "bg-[linear-gradient(180deg,#0d2d74_0%,#0c2868_100%)] text-white"
+  const whatWeDoSection = dark
+    ? "bg-[linear-gradient(180deg,#071a3f_0%,#061531_100%)] text-white"
     : "bg-[linear-gradient(180deg,#3f6de2_0%,#335fd2_100%)] text-white";
-  const darkSection = dark
-    ? "bg-[linear-gradient(180deg,#08162f_0%,#08182f_100%)] text-white"
+  const howItWorksSection = dark
+    ? "bg-[linear-gradient(180deg,#071b43_0%,#061634_100%)] text-white"
     : "bg-[linear-gradient(180deg,#102856_0%,#123164_100%)] text-white";
   const footerBg = dark
     ? "bg-[linear-gradient(90deg,#081325_0%,#0b1d42_48%,#081325_100%)] text-white"
@@ -739,7 +718,7 @@ export default function ApplyLoopLandingPage() {
     <div
       id="top"
       className={[
-        poppins.className,
+        inter.className,
         "min-h-screen w-full overflow-x-hidden transition-colors duration-300",
         page,
       ].join(" ")}
@@ -810,11 +789,7 @@ export default function ApplyLoopLandingPage() {
                     : "border-[#cadeff] bg-white text-[#12305e]",
                 ].join(" ")}
               >
-                {menuOpen ? (
-                  <X className="h-4 w-4" />
-                ) : (
-                  <Menu className="h-4 w-4" />
-                )}
+                {menuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
               </button>
             </div>
           </div>
@@ -904,59 +879,59 @@ export default function ApplyLoopLandingPage() {
       </section>
 
       <section className={dark ? "bg-[#0b1834]" : "bg-[#eaf2ff]"}>
-        <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-10 lg:py-12">
-          <SectionReveal>
-            <p
-              className={[
-                "text-center text-sm",
-                dark ? "text-white" : "text-[#143365]",
-              ].join(" ")}
-            >
-              Companies we can help you apply to and get hired
-            </p>
+  <div className="w-full py-10 lg:py-12">
+    <SectionReveal>
+      <p
+        className={[
+          "px-4 text-center text-sm sm:px-6 lg:px-10",
+          dark ? "text-white" : "text-[#143365]",
+        ].join(" ")}
+      >
+        Companies we can help you apply to and get hired
+      </p>
 
-            <div className="relative mt-8 overflow-hidden">
-              <div
-                className={[
-                  "pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-gradient-to-r sm:w-16",
-                  dark
-                    ? "from-[#0b1834] to-transparent"
-                    : "from-[#eaf2ff] to-transparent",
-                ].join(" ")}
-              />
-              <div
-                className={[
-                  "pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l sm:w-16",
-                  dark
-                    ? "from-[#0b1834] to-transparent"
-                    : "from-[#eaf2ff] to-transparent",
-                ].join(" ")}
-              />
+      <div className="relative mt-8 w-full overflow-hidden">
+        <div
+          className={[
+            "pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-gradient-to-r sm:w-16",
+            dark
+              ? "from-[#0b1834] to-transparent"
+              : "from-[#eaf2ff] to-transparent",
+          ].join(" ")}
+        />
+        <div
+          className={[
+            "pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l sm:w-16",
+            dark
+              ? "from-[#0b1834] to-transparent"
+              : "from-[#eaf2ff] to-transparent",
+          ].join(" ")}
+        />
 
-              <motion.div
-                className="flex items-center gap-5 sm:gap-8"
-                animate={{ x: ["-50%", "0%"] }}
-                transition={{
-                  duration: 24,
-                  repeat: Number.POSITIVE_INFINITY,
-                  ease: "linear",
-                }}
-              >
-                {companyMarquee.map((company, index) => (
-                  <CompanyLogo
-                    key={`${company.file}-${index}`}
-                    company={company}
-                  />
-                ))}
-              </motion.div>
-            </div>
-          </SectionReveal>
-        </div>
-      </section>
+        <motion.div
+          className="flex w-max items-center gap-5 sm:gap-8"
+          animate={{ x: ["0%", "-50%"] }}
+          transition={{
+            duration: 24,
+            repeat: Number.POSITIVE_INFINITY,
+            ease: "linear",
+          }}
+        >
+          {companyMarquee.map((company, index) => (
+            <CompanyLogo
+              key={`${company.file}-${index}`}
+              company={company}
+            />
+          ))}
+        </motion.div>
+      </div>
+    </SectionReveal>
+  </div>
+</section>
 
       <section
         id="what-we-do"
-        className={["relative overflow-hidden scroll-mt-28", blueSection].join(
+        className={["relative overflow-hidden scroll-mt-28", whatWeDoSection].join(
           " "
         )}
       >
@@ -964,13 +939,14 @@ export default function ApplyLoopLandingPage() {
           <div className="grid items-center gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
             <SectionReveal>
               <div className="max-w-[34rem]">
-                <div className="inline-flex items-center rounded-full border border-white/12 bg-white/8 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-white">
-                  What we do
+                <div className="inline-flex items-center gap-2 rounded-full bg-[#2f60d5] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-white shadow-[0_16px_34px_-18px_rgba(47,96,213,0.95)]">
+                  <span className="h-2 w-2 rounded-full bg-white" />
+                  WHAT WE DO
                 </div>
-                <h2 className="mt-8 text-3xl font-semibold tracking-tight sm:text-5xl">
+                <h2 className="mt-7 max-w-[31rem] text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-5xl">
                   Job hunting shouldn&apos;t feel like a full-time job.
                 </h2>
-                <p className="mt-5 max-w-[28rem] text-sm leading-7 text-white/78 sm:text-[15px]">
+                <p className="mt-5 max-w-[28rem] text-sm leading-7 text-white/76 sm:text-[15px]">
                   You apply to dozens, sometimes hundreds, of jobs and hear back
                   from almost none. It&apos;s repetitive, time-consuming, and
                   frustrating.
@@ -983,8 +959,12 @@ export default function ApplyLoopLandingPage() {
 
             <SectionReveal delay={0.08}>
               <div className="relative flex justify-center lg:justify-end">
-                <div className="pointer-events-none absolute inset-0 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.08),transparent_55%)]" />
-                <SearchIllustration />
+                <img
+                  src="/what-we-do-image.png"
+                  alt="What we do illustration"
+                  className="max-w-full h-auto rounded-xl shadow-lg"
+                  style={{ maxWidth: 420 }}
+                />
               </div>
             </SectionReveal>
           </div>
@@ -999,30 +979,32 @@ export default function ApplyLoopLandingPage() {
         </div>
       </section>
 
-      <section className={["relative overflow-hidden", darkSection].join(" ")}>
-        <div className="mx-auto max-w-[1280px] px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
-          <SectionReveal>
-            <HowItWorksSection />
-          </SectionReveal>
-        </div>
+      <section
+        className={["relative overflow-hidden", howItWorksSection].join(" ")}
+      >
+        <SectionReveal>
+          <HowItWorksSection />
+        </SectionReveal>
       </section>
 
       <section id="testimonials" className={dark ? "bg-[#08162f]" : "bg-[#102856]"}>
-        <div className="mx-auto max-w-7xl scroll-mt-28 px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
+        <div className="w-full scroll-mt-28 py-16 lg:py-24">
           <SectionReveal>
-            <div className="max-w-xl">
-              <div className="inline-flex items-center rounded-full border border-white/12 bg-white/8 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-white">
-                Testimonials
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
+              <div className="max-w-xl">
+                <div className="inline-flex items-center rounded-full border border-white/12 bg-white/8 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-white">
+                  Testimonials
+                </div>
+                <h2 className="mt-8 text-3xl font-semibold tracking-tight text-white sm:text-5xl">
+                  What people are saying about Applyloop
+                </h2>
               </div>
-              <h2 className="mt-8 text-3xl font-semibold tracking-tight text-white sm:text-5xl">
-                What people are saying about Applyloop
-              </h2>
             </div>
           </SectionReveal>
 
-          <div className="mt-10 space-y-4 sm:mt-12">
-            <TestimonialRow items={topRow} duration={34} />
-            <TestimonialRow items={bottomRow} duration={39} />
+          <div className="mt-10 w-full space-y-4 sm:mt-12">
+            <TestimonialRow items={topRow} duration={36} direction="rtl" />
+            <TestimonialRow items={bottomRow} duration={40} direction="ltr" />
           </div>
         </div>
       </section>
@@ -1038,20 +1020,16 @@ export default function ApplyLoopLandingPage() {
                 About Us
               </h2>
               <p className="mx-auto mt-8 max-w-4xl text-lg font-medium leading-[1.5] tracking-tight text-white/76 sm:text-[1.45rem] lg:text-[2.1rem]">
-                Finding the right job today takes more than just sending
-                applications, it takes strategy, consistency, and time most
-                people simply don&apos;t have.{" "}
-                <span className="font-semibold text-white">Applyloop</span>
-                <span>
-                  {" "}
-                  was built to change that. We help job seekers take control of
-                  their job search by combining the{" "}
-                </span>
-                <span className="font-semibold text-white">speed of AI</span>
-                <span> with the precision of </span>
+                Finding the right job today takes strategy, consistency, and
+                time most people simply don&apos;t have.{" "}
+                <span className="font-semibold text-white">Applyloop</span>{" "}
+                combines the{" "}
+                <span className="font-semibold text-white">speed of AI</span>{" "}
+                with the precision of{" "}
                 <span className="font-semibold text-white">
-                  human expertise.
+                  human expertise
                 </span>
+                .
               </p>
             </div>
           </SectionReveal>
@@ -1106,9 +1084,7 @@ export default function ApplyLoopLandingPage() {
       <section
         id="ats-review"
         className={
-          dark
-            ? "bg-[#08162f] text-white"
-            : "bg-[#edf4ff] text-[#12305e]"
+          dark ? "bg-[#08162f] text-white" : "bg-[#edf4ff] text-[#12305e]"
         }
       >
         <div className="mx-auto max-w-7xl scroll-mt-28 px-4 py-10 sm:px-6 lg:px-10 lg:py-16">
@@ -1224,12 +1200,12 @@ export default function ApplyLoopLandingPage() {
                 {[
                   {
                     title: "AI Automation",
-                    desc: "Scans job descriptions, extracts keywords, and automatically formats your resume to bypass ATS filters.",
+                    desc: "Scans job descriptions, extracts keywords, and formats your resume to pass ATS filters.",
                     icon: Brain,
                   },
                   {
                     title: "Human Quality Control",
-                    desc: "Trained specialists handle complex application forms, write custom cover letters, and ensure final polish.",
+                    desc: "Trained specialists handle complex forms, custom cover letters, and final review.",
                     icon: Users,
                   },
                 ].map((feature) => {
@@ -1342,14 +1318,16 @@ export default function ApplyLoopLandingPage() {
               ))}
             </div>
           </div>
+        </div>
 
-          <div className="mt-16 border-t border-white/10 pt-10 lg:mt-24 lg:pt-14">
-            <div className="overflow-hidden text-[18vw] font-semibold leading-none tracking-[-0.08em] text-white/95 lg:text-[12rem]">
-              APPLY LOOP
-            </div>
+        <div className="w-full border-y border-white/10 px-2 py-8 sm:px-4 lg:py-10">
+          <div className="w-full overflow-hidden text-center text-[18vw] font-semibold leading-none tracking-[-0.08em] text-white/95 sm:text-[17vw] lg:text-[13vw]">
+            APPLY LOOP
           </div>
+        </div>
 
-          <div className="mt-10 flex flex-col gap-4 border-t border-white/10 pt-8 text-sm text-white/70 sm:flex-row sm:items-center sm:justify-between">
+        <div className="relative mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-10">
+          <div className="flex flex-col gap-4 text-sm text-white/70 sm:flex-row sm:items-center sm:justify-between">
             <div>Copyright © 2026 all rights reserved.</div>
             <a href="#top" className="inline-flex items-center gap-2 hover:text-white">
               Back to top <ChevronUp className="h-4 w-4" />
@@ -1359,11 +1337,9 @@ export default function ApplyLoopLandingPage() {
           <div className="mt-8 flex flex-col gap-3 border-t border-white/10 pt-8 text-[11px] leading-6 text-white/48 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl">
               Disclaimer: This platform provides guidance, resources, and
-              support to enhance your job search. However, securing employment
-              within 30 days depends on various factors beyond our control,
-              including market conditions, individual effort, and employer
-              decisions. We do not guarantee job placement within any specific
-              timeframe.
+              support to enhance your job search. Securing employment within 30
+              days depends on market conditions, individual effort, and employer
+              decisions.
             </div>
             <div className="flex flex-wrap gap-4 text-white/56">
               <a href="#">Refund Policy</a>
