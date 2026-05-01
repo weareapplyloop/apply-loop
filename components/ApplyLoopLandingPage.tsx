@@ -146,7 +146,6 @@ const faqs: FaqItem[] = [
 
 const companies: CompanyItem[] = [
   { name: "ADP", file: "adp-logo.png" },
-  { name: "Ambry Genetics", file: "ambry-genetics-logo.png" },
   { name: "Barclays", file: "barclays-logo.png" },
   { name: "BearCom AlwaysOn", file: "bearcom-always-logo.png" },
   { name: "Danta Technologies", file: "danta-technologies-logo.png" },
@@ -729,105 +728,107 @@ export default function ApplyLoopLandingPage() {
         }
       `}</style>
 
-      <section className={["relative overflow-hidden", heroBg].join(" ")}>
+       <header
+        className={[
+        "fixed inset-x-0 top-0 z-[999] border-b",
+        dark
+          ? "border-white/10 bg-[#071327]/90 text-white backdrop-blur-xl"
+          : "border-[#d7e4ff] bg-[#f7faff]/90 text-[#12305e] backdrop-blur-xl",
+        ].join(" ")}
+        >
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4 sm:px-6 lg:px-10">
+          <a href="#top" className="flex min-w-0 items-center gap-2.5">
+          <img
+            src="/applyloop-logo-blue.png"
+            alt="Apply Loop logo"
+            className="h-7 w-7 object-contain"
+          />
+          <span
+            className={[
+              "truncate text-sm font-semibold tracking-[-0.03em]",
+              dark ? "text-white" : "text-[#12305e]",
+            ].join(" ")}
+          >
+            ApplyLoop
+          </span>
+          </a>
+
+    <nav className="hidden items-center gap-8 md:flex">
+      {navLinks.map((link) => (
+        <a
+          key={link.label}
+          href={link.href}
+          className={["text-[12px] transition", navText].join(" ")}
+        >
+          {link.label}
+        </a>
+      ))}
+    </nav>
+
+    <div className="flex items-center gap-2 sm:gap-3">
+      <a
+        href={SCHEDULE_LINK}
+        target="_blank"
+        rel="noreferrer"
+        className="rounded-full bg-[#2d59cf] px-3 py-2 text-xs font-medium text-white shadow-[0_20px_40px_-20px_rgba(45,89,207,0.95)] transition hover:-translate-y-0.5 sm:px-5 sm:py-2.5 sm:text-sm"
+      >
+        Schedule a call
+      </a>
+
+      <ThemeSwitch dark={dark} onToggle={() => setDark((value) => !value)} />
+
+      <button
+        type="button"
+        aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+        aria-expanded={menuOpen}
+        onClick={() => setMenuOpen((value) => !value)}
+        className={[
+          "inline-flex h-9 w-9 items-center justify-center rounded-full border md:hidden",
+          dark
+            ? "border-white/12 bg-white/5 text-white"
+            : "border-[#cadeff] bg-white text-[#12305e]",
+        ].join(" ")}
+      >
+        {menuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+      </button>
+    </div>
+  </div>
+
+  <AnimatePresence>
+    {menuOpen ? (
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -10 }}
+        transition={{ duration: 0.2 }}
+        className={[
+          "mx-4 mb-4 rounded-2xl border p-4 md:hidden",
+          dark
+            ? "border-white/10 bg-[#0d1d3f]/95"
+            : "border-[#d7e4ff] bg-white/95",
+        ].join(" ")}
+      >
+        <div className="flex flex-col gap-3">
+          {navLinks.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              onClick={() => setMenuOpen(false)}
+              className={["rounded-xl px-3 py-2 text-sm transition", navText].join(" ")}
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+      </motion.div>
+    ) : null}
+  </AnimatePresence>
+</header>
+
+      <section className={["relative overflow-hidden pt-[76px]", heroBg].join(" ")}>
         <SoftGlow dark={dark} />
 
-        <header className="relative z-20 mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-10">
-          <div className="flex items-center justify-between gap-3">
-            <a href="#top" className="flex min-w-0 items-center gap-2.5">
-              <img
-                src="/applyloop-logo-blue.png"
-                alt="Apply Loop logo"
-                className="h-7 w-7 object-contain"
-              />
-              <span
-                className={[
-                  "truncate text-sm font-semibold tracking-[-0.03em]",
-                  dark ? "text-white" : "text-[#12305e]",
-                ].join(" ")}
-              >
-                ApplyLoop
-              </span>
-            </a>
-
-            <nav className="hidden items-center gap-8 md:flex">
-              {navLinks.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  className={["text-[12px] transition", navText].join(" ")}
-                >
-                  {link.label}
-                </a>
-              ))}
-            </nav>
-
-            <div className="flex items-center gap-2 sm:gap-3">
-              <a
-                href={SCHEDULE_LINK}
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-full bg-[#2d59cf] px-3 py-2 text-xs font-medium text-white shadow-[0_20px_40px_-20px_rgba(45,89,207,0.95)] transition hover:-translate-y-0.5 sm:px-5 sm:py-2.5 sm:text-sm"
-              >
-                Schedule a call
-              </a>
-              <ThemeSwitch
-                dark={dark}
-                onToggle={() => setDark((value) => !value)}
-              />
-              <button
-                type="button"
-                aria-label={
-                  menuOpen ? "Close navigation menu" : "Open navigation menu"
-                }
-                aria-expanded={menuOpen}
-                onClick={() => setMenuOpen((value) => !value)}
-                className={[
-                  "inline-flex h-9 w-9 items-center justify-center rounded-full border md:hidden",
-                  dark
-                    ? "border-white/12 bg-white/5 text-white"
-                    : "border-[#cadeff] bg-white text-[#12305e]",
-                ].join(" ")}
-              >
-                {menuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-              </button>
-            </div>
-          </div>
-
-          <AnimatePresence>
-            {menuOpen ? (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.2 }}
-                className={[
-                  "mt-4 rounded-2xl border p-4 md:hidden",
-                  dark
-                    ? "border-white/10 bg-[#0d1d3f]/95"
-                    : "border-[#d7e4ff] bg-white/95",
-                ].join(" ")}
-              >
-                <div className="flex flex-col gap-3">
-                  {navLinks.map((link) => (
-                    <a
-                      key={link.label}
-                      href={link.href}
-                      onClick={() => setMenuOpen(false)}
-                      className={[
-                        "rounded-xl px-3 py-2 text-sm transition",
-                        navText,
-                      ].join(" ")}
-                    >
-                      {link.label}
-                    </a>
-                  ))}
-                </div>
-              </motion.div>
-            ) : null}
-          </AnimatePresence>
-        </header>
-
+       
         <div className="relative mx-auto max-w-7xl px-4 pb-16 pt-8 sm:px-6 lg:px-10 lg:pb-28 lg:pt-16">
           <SectionReveal>
             <div className="mx-auto max-w-4xl text-center">
