@@ -215,23 +215,24 @@ function CompanyLogo({ company }: { company: CompanyItem }) {
   const [hasError, setHasError] = React.useState(false);
 
   return (
-    <div className="flex min-w-[140px] items-center justify-center px-5 sm:min-w-[160px] sm:px-7">
-      {!hasError ? (
-        <img
-          src={`/logos/${company.file}`}
-          alt={`${company.name} logo`}
-          className="h-8 w-auto object-contain opacity-80 transition duration-300 hover:opacity-100 sm:h-10"
-          onError={() => setHasError(true)}
-        />
-      ) : (
-        <div className="text-center text-sm font-medium text-white/40">
-          {company.name}
-        </div>
-      )}
+    <div className="flex min-w-[160px] items-center justify-center px-4 sm:min-w-[180px]">
+      <div className="flex h-[56px] w-[140px] items-center justify-center rounded-xl bg-white px-4 shadow-[0_14px_30px_-22px_rgba(0,0,0,0.55)] sm:w-[155px]">
+        {!hasError ? (
+          <img
+            src={`/logos/${company.file}`}
+            alt={`${company.name} logo`}
+            className="max-h-9 w-auto max-w-full object-contain"
+            onError={() => setHasError(true)}
+          />
+        ) : (
+          <div className="text-center text-xs font-semibold text-[#12305e]">
+            {company.name}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
-
 function Rule({ width }: { width: string }) {
   return (
     <motion.div
@@ -246,19 +247,38 @@ function Rule({ width }: { width: string }) {
   );
 }
 
-function HeroPreviewCard() {
+function HeroPreviewCard({ dark }: { dark: boolean }) {
   return (
-    <div className="mx-auto max-w-[860px] rounded-[12px] border border-[#1b2e5a] bg-[linear-gradient(180deg,rgba(14,22,44,0.96),rgba(12,19,39,0.94))] p-3 shadow-[0_24px_60px_-36px_rgba(39,80,185,0.85)] sm:p-4">
+    <div
+      className={[
+        "mx-auto max-w-[860px] rounded-[12px] border p-3 shadow-[0_24px_60px_-36px_rgba(39,80,185,0.85)] sm:p-4",
+        dark
+          ? "border-[#1b2e5a] bg-[linear-gradient(180deg,rgba(14,22,44,0.96),rgba(12,19,39,0.94))]"
+          : "border-[#d7e4ff] bg-white/90",
+      ].join(" ")}
+    >
       <div className="grid overflow-hidden rounded-[10px] md:grid-cols-[1fr_1px_1fr]">
         <div className="px-4 py-4 sm:px-5 sm:py-5">
           <div className="flex items-start gap-3">
-            <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-[7px] bg-white text-[#2f5fdd] sm:h-8 sm:w-8">
+            <div
+              className={[
+                "mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-[7px] sm:h-8 sm:w-8",
+                dark ? "bg-white text-[#2f5fdd]" : "bg-[#edf4ff] text-[#2f5fdd]",
+              ].join(" ")}
+            >
               <Wand2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </div>
+
             <div className="min-w-0 flex-1">
-              <div className="text-[11px] font-medium text-white sm:text-[12px]">
+              <div
+                className={[
+                  "text-[11px] font-medium sm:text-[12px]",
+                  dark ? "text-white" : "text-[#12305e]",
+                ].join(" ")}
+              >
                 AI Resume Optimization
               </div>
+
               <div className="mt-4 space-y-2.5">
                 <Rule width="w-[68%]" />
                 <Rule width="w-[92%]" />
@@ -268,21 +288,32 @@ function HeroPreviewCard() {
           </div>
         </div>
 
-        <div className="hidden bg-[#223966] md:block" />
+        <div className={dark ? "hidden bg-[#223966] md:block" : "hidden bg-[#dce7ff] md:block"} />
 
         <div className="px-4 py-4 sm:px-5 sm:py-5">
           <div className="flex items-start gap-3">
-            <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-[7px] bg-[#efe4ff] text-[#7b52d9] sm:h-8 sm:w-8">
+            <div
+              className={[
+                "mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-[7px] sm:h-8 sm:w-8",
+                dark ? "bg-[#efe4ff] text-[#7b52d9]" : "bg-[#f4edff] text-[#7b52d9]",
+              ].join(" ")}
+            >
               <Users className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </div>
+
             <div className="min-w-0 flex-1">
-              <div className="text-[11px] font-medium text-white sm:text-[12px]">
+              <div
+                className={[
+                  "text-[11px] font-medium sm:text-[12px]",
+                  dark ? "text-white" : "text-[#12305e]",
+                ].join(" ")}
+              >
                 Human Specialist Review
               </div>
 
               <div className="mt-4 grid grid-cols-[24px_1fr] items-center gap-x-3 gap-y-2.5 sm:grid-cols-[30px_1fr]">
                 <motion.div
-                  className="h-6 w-6 rounded-full bg-[#324a84] sm:h-[30px] sm:w-[30px]"
+                  className={dark ? "h-6 w-6 rounded-full bg-[#324a84] sm:h-[30px] sm:w-[30px]" : "h-6 w-6 rounded-full bg-[#d8e5ff] sm:h-[30px] sm:w-[30px]"}
                   animate={{
                     opacity: [0.55, 1, 0.55],
                     scale: [0.96, 1.03, 0.96],
@@ -873,7 +904,7 @@ export default function ApplyLoopLandingPage() {
 
           <SectionReveal delay={0.08}>
             <div className="mt-12 lg:mt-16">
-              <HeroPreviewCard />
+              <HeroPreviewCard dark = {dark} />
             </div>
           </SectionReveal>
         </div>
@@ -1323,7 +1354,7 @@ export default function ApplyLoopLandingPage() {
 
         <div className="w-full border-y border-white/10 px-2 py-8 sm:px-4 lg:py-10">
           <div className="w-full overflow-hidden text-center text-[18vw] font-semibold leading-none tracking-[-0.08em] text-white/95 sm:text-[17vw] lg:text-[13vw]">
-            APPLY LOOP
+            APPLYLOOP
           </div>
         </div>
 
