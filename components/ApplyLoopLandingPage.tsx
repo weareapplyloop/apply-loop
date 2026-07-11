@@ -1,611 +1,1381 @@
-'use client';
+"use client";
 
-import React, { useMemo, useState } from "react";
-import { motion } from "framer-motion";
+import React, { useState, type ReactNode } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import {
-  Moon,
-  Sun,
-  Sparkles,
-  ShieldCheck,
-  FileSearch,
-  BadgeCheck,
-  Briefcase,
-  Bell,
-  Send,
-  Target,
-  Brain,
-  Users,
-  CheckCircle2,
+  Apple,
   ArrowUpRight,
-  Search,
-  UserCircle2,
-  Wand2,
+  Brain,
+  Briefcase,
+  CalendarDays,
+  Check,
   ChevronUp,
+  ClipboardList,
+  Factory,
+  FileSearch,
+  HeartPulse,
+  Megaphone,
+  Menu,
+  Moon,
+  Package,
+  Sparkles,
+  Sun,
+  Target,
+  Users,
+  Wand2,
+  X,
 } from "lucide-react";
+import { Inter } from "next/font/google";
 
-const processSteps = [
-  { title: "AI Resume Optimization", icon: Wand2 },
-  { title: "Human Specialist Review", icon: Users },
-  { title: "ATS Compliance", icon: ShieldCheck },
-  { title: "Final QA", icon: BadgeCheck },
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+});
+
+const SCHEDULE_LINK = "https://calendar.app.google/4YV2VJEgkqPegeo59";
+
+type IconType = React.ComponentType<{ className?: string }>;
+
+type FeatureItem = {
+  title: string;
+  desc: string;
+  icon: IconType;
+};
+
+type Testimonial = {
+  name: string;
+  role: string;
+  quote: string;
+};
+
+type FaqItem = {
+  q: string;
+  a: string;
+  tone: string;
+  active?: boolean;
+};
+
+type IndustryItem = {
+  title: string;
+  icon: IconType;
+};
+
+type CompanyItem = {
+  name: string;
+  file: string;
+};
+
+const navLinks = [
+  { label: "Services", href: "#what-we-do" },
+  { label: "About Us", href: "#about-us" },
+  { label: "FAQs", href: "#faqs" },
 ];
 
-const ourRole = [
+const footerLinks = [
+  { label: "Home", href: "#top" },
+  { label: "Services", href: "#what-we-do" },
+  { label: "About Us", href: "#about-us" },
+  { label: "FAQs", href: "#faqs" },
+  { label: "Become a client", href: "#become-client" },
+];
+
+const whatWeDo: FeatureItem[] = [
   {
-    title: "Collect data on client preference",
-    desc: "We gather your role, location, experience, and career goals to guide every application.",
+    title: "Optimize Resume",
+    desc: "ATS-friendly and recruiter-approved to help you get noticed faster.",
     icon: FileSearch,
   },
   {
-    title: "Job search & matching",
-    desc: "We find roles that align with your profile using smart AI and human review.",
-    icon: Search,
-  },
-  {
-    title: "Application submission",
-    desc: "Applications are submitted on your behalf — optimized, accurate, and ATS-compliant.",
-    icon: Send,
-  },
-];
-
-const yourRole = [
-  {
-    title: "Receive notifications",
-    desc: "Stay updated with alerts on applications, responses, and interview requests.",
-    icon: Bell,
-  },
-  {
-    title: "Follow up on applications",
-    desc: "We track progress and follow up where appropriate to keep things moving.",
-    icon: Target,
-  },
-  {
-    title: "Interview Readiness",
-    desc: "Get guidance and tips to help you show up confident and prepared.",
+    title: "Job Application",
+    desc: "Personalized applications are sent based on your goals and preferences.",
     icon: Briefcase,
   },
+  {
+    title: "Land Interview",
+    desc: "We help you prepare so you show up confident and ready.",
+    icon: Target,
+  },
 ];
 
-const companyLogos = ["Deloitte.", "Interswitch", "Meta", "ORACLE", "TESLA", "Google"];
+const industryItems: IndustryItem[] = [
+  { title: "Design & Tech", icon: Wand2 },
+  { title: "Consulting", icon: Users },
+  { title: "Sales", icon: Target },
+  { title: "Operations", icon: ClipboardList },
+  { title: "Healthcare", icon: HeartPulse },
+  { title: "Finance and Accounting", icon: Briefcase },
+  { title: "Marketing", icon: Megaphone },
+  { title: "Manufacturing", icon: Factory },
+];
 
-const navLinks = ["Services", "Testimonials", "FAQs", "Careers"];
-const footerLinks = ["Home", "Services", "Testimonials", "FAQs", "Join us", "Become a client"];
+const testimonials: Testimonial[] = Array.from({ length: 8 }, (_, index) => ({
+  name: "Olabanji David T.",
+  role: "UX Designer",
+  quote:
+    index % 2 === 0
+      ? "ApplyLoop gave my job search structure, better positioning, and a clearer application rhythm. The support was fast and practical."
+      : "ApplyLoop helped reduce the stress of applying. The process felt organized from resume updates to interview preparation.",
+}));
 
-function SectionReveal({ children, delay = 0 }) {
+const faqs: FaqItem[] = [
+  {
+    q: "How does Applyloop work?",
+    a: "Applyloop starts with a quick consultation, aligns your goals, and optimizes your application materials. Then tailored submissions begin on your behalf.",
+    tone: "bg-[#3560d2]",
+  },
+  {
+    q: "Will I still have control over my job applications?",
+    a: "Yes. You stay in control of your preferences and target roles while Applyloop handles the heavy lifting.",
+    tone: "bg-[#f1ab5a] text-white",
+  },
+  {
+    q: "Are the applications customized for each job?",
+    a: "Yes. Every application is tailored with optimized keywords and recruiter-friendly positioning.",
+    tone: "bg-[#102f67]",
+  },
+  {
+    q: "How many jobs will you apply to for me?",
+    a: "This depends on your subscription plan. Each plan includes a set number of applications per week.",
+    tone: "bg-[#6f9de8]",
+    active: true,
+  },
+];
+
+const companies: CompanyItem[] = [
+  { name: "ADP", file: "adp-logo.png" },
+  { name: "Barclays", file: "barclays-logo.png" },
+  { name: "BearCom AlwaysOn", file: "bearcom-always-logo.png" },
+  { name: "Danta Technologies", file: "danta-technologies-logo.png" },
+  { name: "FIS", file: "fis-logo.png" },
+  { name: "Impact XM", file: "impact-xm-logo.png" },
+  { name: "Kohl's Careers", file: "kohls-careers-logo.png" },
+  { name: "Leidos", file: "leidos-logo.png" },
+  { name: "MLABS", file: "mlabs-logo.png" },
+  { name: "Northwest Partners", file: "northwest-partners-logo.png" },
+  { name: "RV", file: "rv-logo.png" },
+  { name: "TEEMA", file: "teema-logo.png" },
+  { name: "Teradata", file: "teradata-logo.png" },
+  { name: "TPX", file: "tpx-logo.png" },
+];
+
+const companyMarquee = [...companies, ...companies, ...companies, ...companies];
+
+function SectionReveal({
+  children,
+  delay = 0,
+}: {
+  children: ReactNode;
+  delay?: number;
+}) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 28 }}
+      initial={{ opacity: 0, y: 26 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.65, delay }}
+      viewport={{ once: true, amount: 0.14 }}
+      transition={{ duration: 0.62, delay }}
     >
       {children}
     </motion.div>
   );
 }
 
-function GridGlow({ dark }) {
+function SoftGlow({ dark }: { dark: boolean }) {
   return (
-    <div
-      className="absolute inset-0 pointer-events-none"
-      style={{
-        backgroundImage: dark
-          ? "linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px)"
-          : "linear-gradient(to right, rgba(17,24,39,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(17,24,39,0.04) 1px, transparent 1px)",
-        backgroundSize: "64px 64px",
-        maskImage: "radial-gradient(circle at center, black 55%, transparent 100%)",
+    <>
+      <div
+        className={[
+          "pointer-events-none absolute -left-16 top-0 h-72 w-72 rounded-full blur-3xl sm:h-80 sm:w-80",
+          dark ? "bg-[#2d59cf]/18" : "bg-[#7ea6ff]/28",
+        ].join(" ")}
+      />
+      <div
+        className={[
+          "pointer-events-none absolute bottom-0 right-[6%] h-80 w-80 rounded-full blur-3xl sm:h-96 sm:w-96",
+          dark ? "bg-[#315de2]/12" : "bg-[#8cb2ff]/22",
+        ].join(" ")}
+      />
+    </>
+  );
+}
+
+function RatingsPill() {
+  return (
+    <div className="inline-flex items-center gap-2 rounded-full bg-[#2d59cf] px-5 py-2 text-[10px] font-semibold uppercase tracking-[0.1em] text-white shadow-[0_14px_30px_-16px_rgba(40,81,187,0.85)] sm:px-6 sm:text-[11px]">
+      <span>4.8</span>
+      <span className="text-[12px] leading-none">⭐</span>
+      <span>Rated by users</span>
+    </div>
+  );
+}
+
+function CompanyLogo({ company }: { company: CompanyItem }) {
+  const [hasError, setHasError] = React.useState(false);
+
+  return (
+    <div className="flex min-w-[160px] items-center justify-center px-4 sm:min-w-[180px]">
+      <div className="flex h-[56px] w-[140px] items-center justify-center rounded-xl bg-white px-4 shadow-[0_14px_30px_-22px_rgba(0,0,0,0.55)] sm:w-[155px]">
+        {!hasError ? (
+          <img
+            src={`/logos/${company.file}`}
+            alt={`${company.name} logo`}
+            className="max-h-9 w-auto max-w-full object-contain"
+            onError={() => setHasError(true)}
+          />
+        ) : (
+          <div className="text-center text-xs font-semibold text-[#12305e]">
+            {company.name}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+function Rule({ width }: { width: string }) {
+  return (
+    <motion.div
+      className={["h-[4px] rounded-full bg-[#445e98]", width].join(" ")}
+      animate={{ opacity: [0.45, 1, 0.45] }}
+      transition={{
+        duration: 1.6,
+        repeat: Number.POSITIVE_INFINITY,
+        ease: "easeInOut",
       }}
     />
   );
 }
 
-function Pill({ children, dark }) {
+function HeroPreviewCard({ dark }: { dark: boolean }) {
   return (
     <div
       className={[
-        "inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[11px] font-medium tracking-[0.18em] uppercase",
+        "mx-auto max-w-[860px] rounded-[12px] border p-3 shadow-[0_24px_60px_-36px_rgba(39,80,185,0.85)] sm:p-4",
         dark
-          ? "border-white/10 bg-white/5 text-white/90"
-          : "border-blue-200 bg-blue-50 text-blue-700",
+          ? "border-[#1b2e5a] bg-[linear-gradient(180deg,rgba(14,22,44,0.96),rgba(12,19,39,0.94))]"
+          : "border-[#d7e4ff] bg-white/90",
       ].join(" ")}
     >
-      <span className={[
-        "h-2 w-2 rounded-full",
-        dark ? "bg-blue-400" : "bg-blue-600",
-      ].join(" ")} />
-      {children}
+      <div className="grid overflow-hidden rounded-[10px] md:grid-cols-[1fr_1px_1fr]">
+        <div className="px-4 py-4 sm:px-5 sm:py-5">
+          <div className="flex items-start gap-3">
+            <div
+              className={[
+                "mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-[7px] sm:h-8 sm:w-8",
+                dark ? "bg-white text-[#2f5fdd]" : "bg-[#edf4ff] text-[#2f5fdd]",
+              ].join(" ")}
+            >
+              <Wand2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            </div>
+
+            <div className="min-w-0 flex-1">
+              <div
+                className={[
+                  "text-[11px] font-medium sm:text-[12px]",
+                  dark ? "text-white" : "text-[#12305e]",
+                ].join(" ")}
+              >
+                AI Resume Optimization
+              </div>
+
+              <div className="mt-4 space-y-2.5">
+                <Rule width="w-[68%]" />
+                <Rule width="w-[92%]" />
+                <Rule width="w-[84%]" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className={dark ? "hidden bg-[#223966] md:block" : "hidden bg-[#dce7ff] md:block"} />
+
+        <div className="px-4 py-4 sm:px-5 sm:py-5">
+          <div className="flex items-start gap-3">
+            <div
+              className={[
+                "mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-[7px] sm:h-8 sm:w-8",
+                dark ? "bg-[#efe4ff] text-[#7b52d9]" : "bg-[#f4edff] text-[#7b52d9]",
+              ].join(" ")}
+            >
+              <Users className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            </div>
+
+            <div className="min-w-0 flex-1">
+              <div
+                className={[
+                  "text-[11px] font-medium sm:text-[12px]",
+                  dark ? "text-white" : "text-[#12305e]",
+                ].join(" ")}
+              >
+                Human Specialist Review
+              </div>
+
+              <div className="mt-4 grid grid-cols-[24px_1fr] items-center gap-x-3 gap-y-2.5 sm:grid-cols-[30px_1fr]">
+                <motion.div
+                  className={dark ? "h-6 w-6 rounded-full bg-[#324a84] sm:h-[30px] sm:w-[30px]" : "h-6 w-6 rounded-full bg-[#d8e5ff] sm:h-[30px] sm:w-[30px]"}
+                  animate={{
+                    opacity: [0.55, 1, 0.55],
+                    scale: [0.96, 1.03, 0.96],
+                  }}
+                  transition={{
+                    duration: 1.8,
+                    repeat: Number.POSITIVE_INFINITY,
+                    ease: "easeInOut",
+                  }}
+                />
+                <div className="space-y-2.5">
+                  <Rule width="w-[62%]" />
+                  <Rule width="w-[70%]" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
 
-function FeatureCard({ item, dark }) {
+function FeatureCard({ item, dark }: { item: FeatureItem; dark: boolean }) {
   const Icon = item.icon;
+
   return (
-    <div className="text-left">
+    <div
+      className={[
+        "rounded-[14px] border px-5 py-5 shadow-[0_18px_40px_-28px_rgba(0,0,0,0.6)] backdrop-blur-sm",
+        dark
+          ? "border-white/10 bg-[#16357f]/42"
+          : "border-[#cfe0ff] bg-[#f7faff]",
+      ].join(" ")}
+    >
       <div
         className={[
-          "mb-5 flex h-10 w-10 items-center justify-center rounded-2xl border shadow-[0_10px_40px_-18px_rgba(59,130,246,0.65)]",
-          dark
-            ? "border-white/10 bg-blue-500/15 text-blue-300"
-            : "border-blue-200 bg-blue-50 text-blue-700",
+          "mb-4 flex h-9 w-9 items-center justify-center rounded-[10px]",
+          dark ? "bg-[#2958d7]/78 text-white" : "bg-[#2e60df] text-white",
         ].join(" ")}
       >
         <Icon className="h-4 w-4" />
       </div>
-      <h3 className={[
-        "mb-2 text-xl font-medium leading-tight",
-        dark ? "text-white" : "text-slate-900",
-      ].join(" ")}>
+      <h3
+        className={[
+          "text-[1.15rem] font-medium",
+          dark ? "text-white" : "text-[#132c57]",
+        ].join(" ")}
+      >
         {item.title}
       </h3>
-      <p className={[
-        "max-w-xs text-sm leading-7",
-        dark ? "text-white/65" : "text-slate-600",
-      ].join(" ")}>
+      <p
+        className={[
+          "mt-2 max-w-[19rem] text-sm leading-6",
+          dark ? "text-white/72" : "text-[#36517f]",
+        ].join(" ")}
+      >
         {item.desc}
       </p>
     </div>
   );
 }
 
-export default function ApplyLoopLandingPage() {
-  const [dark, setDark] = useState(true);
-
-  const theme = useMemo(
-    () => ({
-      page: dark
-        ? "bg-[#071226] text-white"
-        : "bg-[#f3f4f6] text-slate-900",
-      panel: dark
-        ? "bg-[radial-gradient(circle_at_top,_rgba(40,94,255,0.18),_transparent_32%),linear-gradient(180deg,#06101f_0%,#081529_55%,#071226_100%)]"
-        : "bg-[linear-gradient(180deg,#f8f9fb_0%,#f3f4f6_100%)]",
-      muted: dark ? "text-white/65" : "text-slate-600",
-      line: dark ? "border-white/8" : "border-slate-200",
-      card: dark
-        ? "border-white/10 bg-white/[0.03]"
-        : "border-slate-200 bg-white/80",
-      button: dark
-        ? "bg-gradient-to-r from-blue-500 to-blue-400 text-white shadow-[0_20px_60px_-20px_rgba(59,130,246,0.9)]"
-        : "bg-blue-600 text-white shadow-[0_20px_60px_-20px_rgba(37,99,235,0.7)]",
-      soft: dark ? "bg-white/5" : "bg-blue-50",
-      sectionBlue: dark
-        ? "bg-[radial-gradient(circle_at_center,_rgba(44,95,255,0.16),_transparent_35%),linear-gradient(180deg,#081527_0%,#07101f_50%,#081527_100%)]"
-        : "bg-[#2455c9] text-white",
-      footer: dark
-        ? "bg-[linear-gradient(180deg,#071226_0%,#04101d_100%)]"
-        : "bg-[#2d58c6] text-white",
-    }),
-    [dark]
-  );
-
+function SearchIllustration() {
   return (
-    <div className={["min-h-screen w-full transition-colors duration-500", theme.page].join(" ")}>
-      <div className={["relative overflow-hidden", theme.panel].join(" ")}>
-        <GridGlow dark={dark} />
+    function SearchIllustration() {
+  return (
+    <div className="relative mx-auto w-full max-w-[420px] lg:mx-0 lg:max-w-[460px]">
+      <img
+        src="/what-we-do-image.png"
+        alt="Magnifying glass profile search illustration"
+        className="h-auto w-full object-contain"
+      />
+    </div>
+  );
+}
+  );
+}
 
-        <header className={[
-          "sticky top-0 z-50 backdrop-blur-xl",
-          dark ? "bg-[#071226]/65" : "bg-white/70",
-          "border-b",
-          theme.line,
-        ].join(" ")}>
-          <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-10">
-            <div className="text-sm font-medium tracking-tight">Applyloop</div>
+function ProcessCard({
+  title,
+  icon: Icon,
+  className = "",
+  style,
+}: {
+  title: string;
+  icon: IconType;
+  className?: string;
+  style?: React.CSSProperties;
+}) {
+  return (
+    <div
+      style={style}
+      className={[
+        "absolute z-10 flex h-[72px] w-[230px] items-center gap-3 rounded-[8px]",
+        "border border-[#20458a]",
+        "bg-[linear-gradient(180deg,rgba(22,49,115,0.98),rgba(14,33,80,0.98))]",
+        "px-4 shadow-[0_18px_34px_-24px_rgba(0,0,0,0.72)]",
+        className,
+      ].join(" ")}
+    >
+      <div className="h-[40px] w-[12px] shrink-0 rounded-full bg-[#2f66ee]" />
 
-            <nav className="hidden items-center gap-8 md:flex">
-              {navLinks.map((link) => (
-                <a
-                  key={link}
-                  href="#"
-                  className={["text-sm transition-opacity hover:opacity-70", theme.muted].join(" ")}
-                >
-                  {link}
-                </a>
-              ))}
-            </nav>
-
-            <div className="flex items-center gap-3">
-              <button
-                className={[
-                  "hidden rounded-full px-5 py-2.5 text-sm font-medium transition-transform hover:-translate-y-0.5 md:inline-flex",
-                  theme.button,
-                ].join(" ")}
-              >
-                Schedule a call
-              </button>
-              <button
-                aria-label="Toggle theme"
-                onClick={() => setDark((v) => !v)}
-                className={[
-                  "inline-flex h-11 w-11 items-center justify-center rounded-full border transition-transform hover:-translate-y-0.5",
-                  theme.card,
-                ].join(" ")}
-              >
-                {dark ? <Sun className="h-4 w-4 text-white/85" /> : <Moon className="h-4 w-4 text-blue-700" />}
-              </button>
-            </div>
-          </div>
-        </header>
-
-        <main>
-          <section className="relative mx-auto max-w-7xl px-6 pb-20 pt-16 lg:px-10 lg:pb-28 lg:pt-24">
-            <SectionReveal>
-              <div className="mx-auto max-w-4xl text-center">
-                <h1 className="text-5xl font-semibold tracking-tight sm:text-6xl lg:text-7xl">
-                  Spend less time applying.
-                </h1>
-                <div
-                  className={[
-                    "mt-2 text-4xl italic sm:text-5xl lg:text-6xl",
-                    dark ? "text-blue-400" : "text-blue-600",
-                  ].join(" ")}
-                  style={{ fontFamily: "Georgia, Times New Roman, serif" }}
-                >
-                  More time living.
-                </div>
-                <p className={["mx-auto mt-8 max-w-2xl text-base leading-8 sm:text-lg", theme.muted].join(" ")}>
-                  We use AI + human experts to apply to jobs for you, optimize every
-                  application for ATS screening, and shape each submission around your goals.
-                </p>
-                <div className="mt-10 flex items-center justify-center gap-4">
-                  <button
-                    className={[
-                      "rounded-full px-6 py-3 text-sm font-medium transition-transform hover:-translate-y-0.5",
-                      theme.button,
-                    ].join(" ")}
-                  >
-                    Schedule a call
-                  </button>
-                </div>
-              </div>
-            </SectionReveal>
-
-            <SectionReveal delay={0.12}>
-              <div className="relative mt-16 lg:mt-20">
-                <div
-                  className={[
-                    "absolute left-0 right-0 top-1/2 hidden border-t border-dashed lg:block",
-                    dark ? "border-white/10" : "border-slate-300",
-                  ].join(" ")}
-                />
-                <div className="relative grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                  {processSteps.map((step) => {
-                    const Icon = step.icon;
-                    return (
-                      <div
-                        key={step.title}
-                        className={[
-                          "mx-auto flex w-full max-w-[270px] items-center gap-3 rounded-2xl border px-5 py-5 shadow-[0_20px_60px_-35px_rgba(59,130,246,0.8)]",
-                          theme.card,
-                        ].join(" ")}
-                      >
-                        <div
-                          className={[
-                            "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl",
-                            dark ? "bg-blue-500/15 text-blue-300" : "bg-blue-50 text-blue-700",
-                          ].join(" ")}
-                        >
-                          <Icon className="h-4 w-4" />
-                        </div>
-                        <div className="text-sm font-medium">{step.title}</div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </SectionReveal>
-          </section>
-
-          <section className={[
-            "border-y",
-            theme.line,
-            dark ? "bg-[#0a1730]/80" : "bg-white/60",
-          ].join(" ")}>
-            <div className="mx-auto max-w-7xl px-6 py-10 lg:px-10 lg:py-14">
-              <SectionReveal>
-                <p className={["text-center text-sm", theme.muted].join(" ")}>
-                  Companies we can help you apply to and get hired
-                </p>
-                <div className="mt-8 grid grid-cols-2 items-center gap-8 text-center sm:grid-cols-3 lg:grid-cols-6">
-                  {companyLogos.map((logo, idx) => (
-                    <div
-                      key={logo}
-                      className={[
-                        "text-3xl font-semibold tracking-tight",
-                        dark
-                          ? idx === 2
-                            ? "text-blue-400"
-                            : idx === 3
-                              ? "text-red-400"
-                              : "text-white/80"
-                          : idx === 2
-                            ? "text-blue-600"
-                            : idx === 3
-                              ? "text-red-500"
-                              : idx === 5
-                                ? "text-blue-500"
-                                : "text-slate-700",
-                      ].join(" ")}
-                    >
-                      {logo}
-                    </div>
-                  ))}
-                </div>
-              </SectionReveal>
-            </div>
-          </section>
-
-          <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-            <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
-              <SectionReveal>
-                <Pill dark={dark}>What We Do</Pill>
-                <h2 className="mt-8 max-w-xl text-4xl font-semibold tracking-tight sm:text-5xl">
-                  Job applications are exhausting. We fixed that.
-                </h2>
-                <p className={["mt-8 max-w-xl text-base leading-8", theme.muted].join(" ")}>
-                  Job searching can be time consuming, repetitive and often overwhelming.
-                  Apply Loop reduces the burden of the application process, so you can focus
-                  on career growth and getting the right visibility in your field.
-                </p>
-              </SectionReveal>
-
-              <SectionReveal delay={0.08}>
-                <div className="relative mx-auto h-[360px] w-full max-w-[520px]">
-                  <div
-                    className={[
-                      "absolute right-20 top-8 rounded-2xl px-5 py-4 shadow-xl",
-                      dark ? "bg-amber-300 text-slate-900" : "bg-amber-300 text-slate-900",
-                    ].join(" ")}
-                  >
-                    <div className="mb-2 h-1.5 w-20 rounded-full bg-white/90" />
-                    <div className="h-1.5 w-28 rounded-full bg-white/70" />
-                  </div>
-                  <div
-                    className={[
-                      "absolute left-12 top-24 rounded-2xl px-5 py-4 shadow-xl",
-                      dark ? "bg-sky-400 text-white" : "bg-sky-400 text-white",
-                    ].join(" ")}
-                  >
-                    <div className="flex items-center gap-2">
-                      <Users className="h-4 w-4" />
-                      <div className="h-1.5 w-24 rounded-full bg-white/90" />
-                    </div>
-                    <div className="mt-2 h-1.5 w-20 rounded-full bg-white/65" />
-                  </div>
-                  <div className="absolute right-8 top-36 flex items-center gap-2 rounded-full bg-pink-400 px-4 py-2 text-white shadow-xl">
-                    <div className="h-2 w-2 rounded-full bg-white/90" />
-                    <div className="h-1.5 w-20 rounded-full bg-white/80" />
-                  </div>
-
-                  <div className="absolute bottom-2 left-1/2 -translate-x-1/2">
-                    <div className="relative h-52 w-52 rounded-full border-[10px] border-blue-950/70 bg-blue-200/80 shadow-[0_30px_80px_-20px_rgba(59,130,246,0.85)]">
-                      <div className="absolute inset-4 rounded-full border-[6px] border-blue-900/70 bg-gradient-to-b from-blue-50 to-blue-200" />
-                      <div className="absolute inset-[34%] flex items-center justify-center rounded-full bg-blue-300">
-                        <UserCircle2 className="h-12 w-12 text-blue-700" />
-                      </div>
-                      <div className="absolute -bottom-20 left-1/2 h-24 w-5 -translate-x-1/2 rotate-[40deg] rounded-full bg-blue-950 shadow-2xl" />
-                    </div>
-                  </div>
-                </div>
-              </SectionReveal>
-            </div>
-          </section>
-
-          <section className={["relative overflow-hidden", theme.sectionBlue].join(" ")}>
-            <GridGlow dark={dark} />
-            <div className="relative mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-              <SectionReveal>
-                <div className="text-center">
-                  <Pill dark={dark}>How Apply Loop Works</Pill>
-                  <h2 className="mt-8 text-4xl font-medium tracking-tight sm:text-5xl">Our role</h2>
-                </div>
-              </SectionReveal>
-
-              <div className="mt-16 grid gap-12 md:grid-cols-2 lg:grid-cols-3">
-                {ourRole.map((item, index) => (
-                  <SectionReveal key={item.title} delay={index * 0.07}>
-                    <FeatureCard item={item} dark={dark || !dark} />
-                  </SectionReveal>
-                ))}
-              </div>
-
-              <SectionReveal>
-                <div className="mt-20 text-center">
-                  <h3 className="text-3xl font-medium tracking-tight sm:text-4xl">
-                    Your own responsibility
-                  </h3>
-                </div>
-              </SectionReveal>
-
-              <div className="mt-14 grid gap-12 md:grid-cols-2 lg:grid-cols-3">
-                {yourRole.map((item, index) => (
-                  <SectionReveal key={item.title} delay={index * 0.07}>
-                    <FeatureCard item={item} dark={dark || !dark} />
-                  </SectionReveal>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-            <div className="grid items-start gap-14 lg:grid-cols-[1.05fr_1fr] lg:gap-20">
-              <SectionReveal>
-                <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
-                  <span className={dark ? "text-white/90" : "text-slate-700"}>Optimized for ATS.</span>
-                  <br />
-                  <span className={dark ? "text-blue-400" : "text-blue-600"}>Reviewed by humans.</span>
-                </h2>
-                <p className={["mt-8 max-w-xl text-base leading-8", theme.muted].join(" ")}>
-                  We do not just spam job boards. Applyloop uses a hybrid model to make every
-                  application technologically optimized and contextually precise.
-                </p>
-
-                <div className="mt-10 space-y-6">
-                  {[
-                    {
-                      title: "AI Automation",
-                      desc: "Scans job descriptions, extracts keywords, and automatically formats your resume to bypass ATS filters.",
-                      icon: Brain,
-                    },
-                    {
-                      title: "Human Quality Control",
-                      desc: "Trained specialists handle complex application forms, write custom cover letters, and ensure final polish.",
-                      icon: Users,
-                    },
-                  ].map((feature) => {
-                    const Icon = feature.icon;
-                    return (
-                      <div key={feature.title} className="flex gap-4">
-                        <div
-                          className={[
-                            "mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border",
-                            dark
-                              ? "border-white/10 bg-blue-500/15 text-blue-300"
-                              : "border-blue-200 bg-blue-50 text-blue-700",
-                          ].join(" ")}
-                        >
-                          <Icon className="h-4 w-4" />
-                        </div>
-                        <div>
-                          <div className="text-lg font-medium">{feature.title}</div>
-                          <div className={["mt-1 max-w-xl text-sm leading-7", theme.muted].join(" ")}>
-                            {feature.desc}
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </SectionReveal>
-
-              <SectionReveal delay={0.1}>
-                <div
-                  className={[
-                    "rounded-[28px] border p-5 shadow-[0_30px_80px_-25px_rgba(59,130,246,0.4)] sm:p-6",
-                    dark ? "border-white/10 bg-white/[0.04]" : "border-slate-200 bg-white/90",
-                  ].join(" ")}
-                >
-                  <div className="flex items-center justify-between gap-4">
-                    <div className="text-lg font-medium">Application Pipeline</div>
-                    <div className="rounded-full bg-emerald-100 px-4 py-2 text-sm font-medium text-emerald-700">
-                      98% ATS Pass Rate
-                    </div>
-                  </div>
-
-                  <div className="mt-6 space-y-3">
-                    {[
-                      {
-                        role: "Product Manager at Stripe",
-                        status: "AI Parsing...",
-                        icon: FileSearch,
-                        tone: dark ? "bg-blue-100 text-blue-700" : "bg-blue-50 text-blue-700",
-                      },
-                      {
-                        role: "UX Designer at Linear",
-                        status: "Human Review...",
-                        icon: Sparkles,
-                        tone: "bg-violet-100 text-violet-700",
-                      },
-                      {
-                        role: "Frontend Dev at Vercel",
-                        status: "Submitted",
-                        icon: CheckCircle2,
-                        tone: "bg-emerald-100 text-emerald-700",
-                      },
-                    ].map((row) => {
-                      const Icon = row.icon;
-                      return (
-                        <div
-                          key={row.role}
-                          className={[
-                            "flex items-center justify-between gap-4 rounded-2xl border px-4 py-4",
-                            dark ? "border-white/10 bg-white/[0.03]" : "border-slate-200 bg-white",
-                          ].join(" ")}
-                        >
-                          <div className="flex min-w-0 items-center gap-3">
-                            <div className={["flex h-9 w-9 items-center justify-center rounded-xl", row.tone].join(" ")}>
-                              <Icon className="h-4 w-4" />
-                            </div>
-                            <div className="truncate text-sm font-medium sm:text-base">{row.role}</div>
-                          </div>
-                          <div className={["shrink-0 text-xs sm:text-sm", theme.muted].join(" ")}>{row.status}</div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </SectionReveal>
-            </div>
-          </section>
-
-          <section className="mx-auto max-w-7xl px-6 pb-16 lg:px-10 lg:pb-20">
-            <SectionReveal>
-              <div className={[
-                "relative overflow-hidden rounded-[34px] border px-8 py-12 sm:px-12 sm:py-14",
-                dark
-                  ? "border-white/10 bg-[linear-gradient(180deg,rgba(73,98,180,0.55),rgba(57,82,160,0.62))]"
-                  : "border-blue-200 bg-[#2e56c6] text-white",
-              ].join(" ")}>
-                <GridGlow dark={false} />
-
-                <div className="absolute left-[18%] top-[18%] flex h-14 w-14 rotate-12 items-center justify-center rounded-2xl bg-blue-900/60 text-white shadow-2xl backdrop-blur">
-                  <Briefcase className="h-5 w-5" />
-                </div>
-                <div className="absolute left-[24%] top-[58%] flex h-14 w-14 -rotate-12 items-center justify-center rounded-2xl bg-blue-300 text-white shadow-2xl">
-                  <ArrowUpRight className="h-5 w-5" />
-                </div>
-                <div className="absolute right-[18%] top-[18%] flex h-16 w-16 rotate-[18deg] items-center justify-center rounded-2xl bg-white text-blue-700 shadow-2xl">
-                  <Sparkles className="h-5 w-5" />
-                </div>
-                <div className="absolute right-[24%] top-[58%] flex h-16 w-16 -rotate-[14deg] items-center justify-center rounded-2xl bg-blue-300 text-white shadow-2xl">
-                  <Users className="h-5 w-5" />
-                </div>
-
-                <div className="relative mx-auto max-w-3xl text-center">
-                  <div className="text-sm font-medium text-white/85">Apply Loop</div>
-                  <h2 className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
-                    Ready to transform your Job search?
-                  </h2>
-                  <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-                    <button className="rounded-full bg-white px-6 py-3 text-sm font-medium text-blue-700 transition-transform hover:-translate-y-0.5">
-                      Become a client
-                    </button>
-                    <button className="rounded-full border border-white/35 px-6 py-3 text-sm font-medium text-white transition-transform hover:-translate-y-0.5">
-                      Join Us
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </SectionReveal>
-          </section>
-        </main>
+      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[7px] bg-[#3b70f4] text-white">
+        <Icon className="h-3.5 w-3.5" />
       </div>
 
-      <footer className={["relative overflow-hidden border-t", theme.line, theme.footer].join(" ")}>
-        <GridGlow dark={dark || !dark} />
-        <div className="relative mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-20">
+      <div className="text-[13px] font-medium leading-none text-white">
+        {title}
+      </div>
+    </div>
+  );
+}
+
+function HowItWorksSection() {
+  return (
+    <div className="relative overflow-hidden bg-[linear-gradient(90deg,#0a2865_0%,#08245c_45%,#071b3d_100%)]">
+      <div className="absolute inset-x-0 top-0 h-[2px] bg-[#2d83ff]" />
+
+      <div className="mx-auto max-w-[1120px] px-5 py-12 sm:px-8 lg:px-12 lg:py-14">
+        <div className="max-w-[420px]">
+          <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#7fb1ff]">
+            HOW IT WORKS
+          </div>
+
+          <h2 className="mt-3 text-[28px] font-semibold leading-[1.08] tracking-[-0.03em] text-white sm:text-[34px]">
+            We handle the hard part so you can focus on showing up strong.
+          </h2>
+
+          <p className="mt-4 max-w-[400px] text-[14px] leading-7 text-white/78">
+            Your search gets a system: cleaner positioning, more relevant
+            applications, and support when interviews start landing.
+          </p>
+        </div>
+
+        {/* Mobile */}
+        <div className="mt-10 space-y-4 lg:hidden">
+          <div className="relative">
+            <div className="relative flex h-[72px] items-center gap-3 rounded-[8px] border border-[#20458a] bg-[linear-gradient(180deg,rgba(22,49,115,0.98),rgba(14,33,80,0.98))] px-4 shadow-[0_18px_34px_-24px_rgba(0,0,0,0.72)]">
+              <div className="h-[40px] w-[12px] shrink-0 rounded-full bg-[#2f66ee]" />
+              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[7px] bg-[#3b70f4] text-white">
+                <CalendarDays className="h-3.5 w-3.5" />
+              </div>
+              <div className="text-[13px] font-medium leading-none text-white">
+                Schedule a call
+              </div>
+            </div>
+          </div>
+
+          <div className="mx-auto h-5 w-px border-l border-dashed border-[#3c84ff]/70" />
+
+          <div className="relative">
+            <div className="relative flex h-[72px] items-center gap-3 rounded-[8px] border border-[#20458a] bg-[linear-gradient(180deg,rgba(22,49,115,0.98),rgba(14,33,80,0.98))] px-4 shadow-[0_18px_34px_-24px_rgba(0,0,0,0.72)]">
+              <div className="h-[40px] w-[12px] shrink-0 rounded-full bg-[#2f66ee]" />
+              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[7px] bg-[#3b70f4] text-white">
+                <Package className="h-3.5 w-3.5" />
+              </div>
+              <div className="text-[13px] font-medium leading-none text-white">
+                Select a package
+              </div>
+            </div>
+          </div>
+
+          <div className="mx-auto h-5 w-px border-l border-dashed border-[#3c84ff]/70" />
+
+          <div className="relative">
+            <div className="relative flex h-[72px] items-center gap-3 rounded-[8px] border border-[#20458a] bg-[linear-gradient(180deg,rgba(22,49,115,0.98),rgba(14,33,80,0.98))] px-4 shadow-[0_18px_34px_-24px_rgba(0,0,0,0.72)]">
+              <div className="h-[40px] w-[12px] shrink-0 rounded-full bg-[#2f66ee]" />
+              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[7px] bg-[#3b70f4] text-white">
+                <ClipboardList className="h-3.5 w-3.5" />
+              </div>
+              <div className="text-[13px] font-medium leading-none text-white">
+                Preference Disclosure
+              </div>
+            </div>
+          </div>
+
+          <div className="mx-auto h-5 w-px border-l border-dashed border-[#3c84ff]/70" />
+
+          <div className="relative">
+            <div className="relative flex h-[72px] items-center gap-3 rounded-[8px] border border-[#20458a] bg-[linear-gradient(180deg,rgba(22,49,115,0.98),rgba(14,33,80,0.98))] px-4 shadow-[0_18px_34px_-24px_rgba(0,0,0,0.72)]">
+              <div className="h-[40px] w-[12px] shrink-0 rounded-full bg-[#2f66ee]" />
+              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[7px] bg-[#3b70f4] text-white">
+                <Briefcase className="h-3.5 w-3.5" />
+              </div>
+              <div className="text-[13px] font-medium leading-none text-white">
+                Application Begins
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Desktop locked layout */}
+        <div className="relative mt-10 hidden lg:block">
+          <div className="relative h-[340px] w-[770px]">
+            <svg
+              className="absolute inset-0 h-full w-full"
+              viewBox="0 0 770 340"
+              fill="none"
+              aria-hidden="true"
+            >
+              {/* schedule -> select */}
+              <path
+                d="M230 36 H420 V108 H540"
+                stroke="rgba(63,139,255,0.72)"
+                strokeWidth="2"
+                strokeDasharray="6 8"
+              />
+
+              {/* select -> preference */}
+              <path
+                d="M540 144 H420 V204 H230"
+                stroke="rgba(63,139,255,0.72)"
+                strokeWidth="2"
+                strokeDasharray="6 8"
+              />
+
+              {/* preference -> application */}
+              <path
+                d="M230 240 H420 V300 H540"
+                stroke="rgba(63,139,255,0.72)"
+                strokeWidth="2"
+                strokeDasharray="6 8"
+              />
+            </svg>
+
+            <ProcessCard
+              title="Schedule a call"
+              icon={CalendarDays}
+              style={{ left: 0, top: 0 }}
+            />
+
+            <ProcessCard
+              title="Select a package"
+              icon={Package}
+              style={{ left: 540, top: 108 }}
+            />
+
+            <ProcessCard
+              title="Preference Disclosure"
+              icon={ClipboardList}
+              style={{ left: 0, top: 204 }}
+            />
+
+            <ProcessCard
+              title="Application Begins"
+              icon={Briefcase}
+              style={{ left: 540, top: 268 }}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function TestimonialCard({ item }: { item: Testimonial }) {
+  return (
+    <div className="min-w-[280px] max-w-[280px] rounded-[12px] border border-white/10 bg-[#12295a]/86 p-4 shadow-[0_18px_40px_-24px_rgba(0,0,0,0.65)] sm:min-w-[320px] sm:max-w-[320px] lg:min-w-[360px] lg:max-w-[360px]">
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="flex h-9 w-9 items-center justify-center rounded-[8px] bg-white/90 text-[#173f95] shadow-inner">
+            <Users className="h-4 w-4" />
+          </div>
+          <div>
+            <div className="text-[12px] font-medium leading-tight text-white">
+              {item.name}
+            </div>
+            <div className="mt-1 text-[10px] text-white/60">{item.role}</div>
+          </div>
+        </div>
+        <Apple className="mt-0.5 h-4 w-4 shrink-0 text-white" />
+      </div>
+
+      <p className="mt-4 text-[12px] leading-6 text-white/80">{item.quote}</p>
+    </div>
+  );
+}
+
+function TestimonialRow({
+  items,
+  duration = 34,
+  direction = "rtl",
+}: {
+  items: Testimonial[];
+  duration?: number;
+  direction?: "rtl" | "ltr";
+}) {
+  const loop = [...items, ...items, ...items, ...items];
+  const x = direction === "rtl" ? ["0%", "-50%"] : ["-50%", "0%"];
+
+  return (
+    <div className="w-full overflow-hidden">
+      <motion.div
+        className="flex w-max gap-3 sm:gap-4"
+        animate={{ x }}
+        transition={{
+          duration,
+          repeat: Number.POSITIVE_INFINITY,
+          ease: "linear",
+        }}
+      >
+        {loop.map((item, index) => (
+          <TestimonialCard key={`${item.name}-${index}`} item={item} />
+        ))}
+      </motion.div>
+    </div>
+  );
+}
+
+function FAQCard({ item, index }: { item: FaqItem; index: number }) {
+  return (
+    <div
+      tabIndex={0}
+      className={[
+        "group cursor-pointer px-5 py-4 text-white transition-all duration-300 sm:px-6",
+        item.tone,
+        index === 0 ? "rounded-t-[18px]" : "-mt-1",
+        index === 3 ? "rounded-b-[18px]" : "",
+        "hover:pb-8 focus:pb-8 sm:hover:pb-12 sm:focus:pb-12",
+      ].join(" ")}
+    >
+      <div className="flex items-center justify-between gap-4">
+        <div className="text-sm font-medium">{item.q}</div>
+        <span className="text-lg leading-none text-white/80 transition-transform duration-300 group-hover:rotate-45 group-focus:rotate-45">
+          +
+        </span>
+      </div>
+
+      <p className="max-h-0 overflow-hidden text-xs leading-6 text-white/90 opacity-0 transition-all duration-300 group-hover:mt-3 group-hover:max-h-32 group-hover:opacity-100 group-focus:mt-3 group-focus:max-h-32 group-focus:opacity-100">
+        {item.a}
+      </p>
+    </div>
+  );
+}
+
+function IndustryCard({ item }: { item: IndustryItem }) {
+  const Icon = item.icon;
+
+  return (
+    <div className="rounded-[8px] border border-white/8 bg-[#23439a]/75 px-4 py-4 text-white/92">
+      <div className="flex items-center gap-3">
+        <div className="flex h-6 w-6 items-center justify-center rounded-[6px] bg-[#17316c] text-white/90">
+          <Icon className="h-3.5 w-3.5" />
+        </div>
+        <div className="text-sm font-medium">{item.title}</div>
+      </div>
+    </div>
+  );
+}
+
+function ThemeSwitch({
+  dark,
+  onToggle,
+}: {
+  dark: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      aria-label="Toggle theme"
+      onClick={onToggle}
+      className={[
+        "relative inline-flex h-8 w-[40px] items-center rounded-full border p-[3px] transition-colors duration-300",
+        dark ? "border-white/12 bg-[#122451]" : "border-[#cadeff] bg-white",
+      ].join(" ")}
+    >
+      <motion.div
+        animate={{ x: dark ? 0 : 12 }}
+        transition={{ duration: 0.24, ease: "easeOut" }}
+        className={[
+          "flex h-5 w-5 items-center justify-center rounded-full shadow-sm",
+          dark ? "bg-[#2e64e7] text-white" : "bg-[#dfe9ff] text-[#2250c7]",
+        ].join(" ")}
+      >
+        {dark ? <Moon className="h-3 w-3" /> : <Sun className="h-3 w-3" />}
+      </motion.div>
+    </button>
+  );
+}
+
+function CtaDecoration({
+  children,
+  className,
+  tone,
+}: {
+  children: ReactNode;
+  className: string;
+  tone: string;
+}) {
+  return (
+    <div
+      className={[
+        "pointer-events-none absolute hidden h-12 w-12 items-center justify-center rounded-2xl shadow-2xl md:flex",
+        tone,
+        className,
+      ].join(" ")}
+    >
+      {children}
+    </div>
+  );
+}
+
+export default function ApplyLoopLandingPage() {
+  const [dark, setDark] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [activeFaq, setActiveFaq] = useState(0);
+
+  const page = dark ? "bg-[#06142b] text-white" : "bg-[#edf4ff] text-[#12305e]";
+  const muted = dark ? "text-white/70" : "text-[#3c5d91]";
+  const navText = dark
+    ? "text-white/62 hover:text-white"
+    : "text-[#355588] hover:text-[#153a75]";
+  const heroBg = dark
+    ? "bg-[radial-gradient(circle_at_top,rgba(46,90,255,0.18),transparent_32%),linear-gradient(180deg,#071327_0%,#061326_55%,#091a36_100%)]"
+    : "bg-[radial-gradient(circle_at_top,rgba(92,133,255,0.22),transparent_36%),linear-gradient(180deg,#f7faff_0%,#eef4ff_52%,#e5efff_100%)]";
+  const whatWeDoSection = dark
+    ? "bg-[linear-gradient(180deg,#071a3f_0%,#061531_100%)] text-white"
+    : "bg-[linear-gradient(180deg,#3f6de2_0%,#335fd2_100%)] text-white";
+  const howItWorksSection = dark
+    ? "bg-[linear-gradient(180deg,#071b43_0%,#061634_100%)] text-white"
+    : "bg-[linear-gradient(180deg,#102856_0%,#123164_100%)] text-white";
+  const footerBg = dark
+    ? "bg-[linear-gradient(90deg,#081325_0%,#0b1d42_48%,#081325_100%)] text-white"
+    : "bg-[linear-gradient(90deg,#112f63_0%,#1a3f83_48%,#112f63_100%)] text-white";
+
+  const topRow = testimonials.slice(0, 4);
+  const bottomRow = testimonials.slice(4, 8);
+
+  return (
+    <div
+      id="top"
+      className={[
+        inter.className,
+        "min-h-screen w-full overflow-x-hidden transition-colors duration-300",
+        page,
+      ].join(" ")}
+    >
+      <style jsx global>{`
+        html {
+          scroll-behavior: smooth;
+        }
+      `}</style>
+
+       <header
+        className={[
+        "fixed inset-x-0 top-0 z-[999] border-b",
+        dark
+          ? "border-white/10 bg-[#071327]/90 text-white backdrop-blur-xl"
+          : "border-[#d7e4ff] bg-[#f7faff]/90 text-[#12305e] backdrop-blur-xl",
+        ].join(" ")}
+        >
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4 sm:px-6 lg:px-10">
+          <a href="#top" className="flex min-w-0 items-center gap-2.5">
+          <img
+            src="/applyloop-logo-blue.png"
+            alt="Apply Loop logo"
+            className="h-7 w-7 object-contain"
+          />
+          <span
+            className={[
+              "truncate text-sm font-semibold tracking-[-0.03em]",
+              dark ? "text-white" : "text-[#12305e]",
+            ].join(" ")}
+          >
+            ApplyLoop
+          </span>
+          </a>
+
+    <nav className="hidden items-center gap-8 md:flex">
+      {navLinks.map((link) => (
+        <a
+          key={link.label}
+          href={link.href}
+          className={["text-[12px] transition", navText].join(" ")}
+        >
+          {link.label}
+        </a>
+      ))}
+    </nav>
+
+    <div className="flex items-center gap-2 sm:gap-3">
+      <a
+        href={SCHEDULE_LINK}
+        target="_blank"
+        rel="noreferrer"
+        className="rounded-full bg-[#2d59cf] px-3 py-2 text-xs font-medium text-white shadow-[0_20px_40px_-20px_rgba(45,89,207,0.95)] transition hover:-translate-y-0.5 sm:px-5 sm:py-2.5 sm:text-sm"
+      >
+        Schedule a call
+      </a>
+
+      <ThemeSwitch dark={dark} onToggle={() => setDark((value) => !value)} />
+
+      <button
+        type="button"
+        aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+        aria-expanded={menuOpen}
+        onClick={() => setMenuOpen((value) => !value)}
+        className={[
+          "inline-flex h-9 w-9 items-center justify-center rounded-full border md:hidden",
+          dark
+            ? "border-white/12 bg-white/5 text-white"
+            : "border-[#cadeff] bg-white text-[#12305e]",
+        ].join(" ")}
+      >
+        {menuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+      </button>
+    </div>
+  </div>
+
+  <AnimatePresence>
+    {menuOpen ? (
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -10 }}
+        transition={{ duration: 0.2 }}
+        className={[
+          "mx-4 mb-4 rounded-2xl border p-4 md:hidden",
+          dark
+            ? "border-white/10 bg-[#0d1d3f]/95"
+            : "border-[#d7e4ff] bg-white/95",
+        ].join(" ")}
+      >
+        <div className="flex flex-col gap-3">
+          {navLinks.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              onClick={() => setMenuOpen(false)}
+              className={["rounded-xl px-3 py-2 text-sm transition", navText].join(" ")}
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+      </motion.div>
+    ) : null}
+  </AnimatePresence>
+</header>
+
+      <section className={["relative overflow-hidden pt-[76px]", heroBg].join(" ")}>
+        <SoftGlow dark={dark} />
+
+       
+        <div className="relative mx-auto max-w-7xl px-4 pb-16 pt-8 sm:px-6 lg:px-10 lg:pb-28 lg:pt-16">
+          <SectionReveal>
+            <div className="mx-auto max-w-4xl text-center">
+              <RatingsPill />
+
+              <h1
+                className={[
+                  "mt-7 text-4xl font-semibold tracking-tight sm:text-6xl lg:text-[3.6rem]",
+                  dark ? "text-white" : "text-[#102447]",
+                ].join(" ")}
+              >
+                Spend less time applying.
+              </h1>
+              <div
+                className="mt-2 text-3xl italic text-[#6ea2ff] sm:text-5xl lg:text-[3.6rem]"
+                style={{ fontFamily: "Georgia, Times New Roman, serif" }}
+              >
+                More time living.
+              </div>
+              <p
+                className={[
+                  "mx-auto mt-6 max-w-2xl text-sm leading-7 sm:text-[15px]",
+                  muted,
+                ].join(" ")}
+              >
+                We use AI + human experts to apply to jobs for you, optimize
+                every application for ATS screening, and shape each submission
+                around your goals.
+              </p>
+              <div className="mt-8 flex items-center justify-center gap-4">
+                <a
+                  href={SCHEDULE_LINK}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded-full bg-[#2d59cf] px-5 py-3 text-sm font-medium text-white shadow-[0_20px_40px_-20px_rgba(45,89,207,0.95)] transition hover:-translate-y-0.5 sm:px-6"
+                >
+                  Schedule a call
+                </a>
+              </div>
+            </div>
+          </SectionReveal>
+
+          <SectionReveal delay={0.08}>
+            <div className="mt-12 lg:mt-16">
+              <HeroPreviewCard dark = {dark} />
+            </div>
+          </SectionReveal>
+        </div>
+      </section>
+
+      <section className={dark ? "bg-[#0b1834]" : "bg-[#eaf2ff]"}>
+  <div className="w-full py-10 lg:py-12">
+    <SectionReveal>
+      <p
+        className={[
+          "px-4 text-center text-sm sm:px-6 lg:px-10",
+          dark ? "text-white" : "text-[#143365]",
+        ].join(" ")}
+      >
+        Companies we can help you apply to and get hired
+      </p>
+
+      <div className="relative mt-8 w-full overflow-hidden">
+        <div
+          className={[
+            "pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-gradient-to-r sm:w-16",
+            dark
+              ? "from-[#0b1834] to-transparent"
+              : "from-[#eaf2ff] to-transparent",
+          ].join(" ")}
+        />
+        <div
+          className={[
+            "pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l sm:w-16",
+            dark
+              ? "from-[#0b1834] to-transparent"
+              : "from-[#eaf2ff] to-transparent",
+          ].join(" ")}
+        />
+
+        <motion.div
+          className="flex w-max items-center gap-5 sm:gap-8"
+          animate={{ x: ["0%", "-50%"] }}
+          transition={{
+            duration: 120,
+            repeat: Number.POSITIVE_INFINITY,
+            ease: "linear",
+          }}
+        >
+          {companyMarquee.map((company, index) => (
+            <CompanyLogo
+              key={`${company.file}-${index}`}
+              company={company}
+            />
+          ))}
+        </motion.div>
+      </div>
+    </SectionReveal>
+  </div>
+</section>
+
+      <section
+        id="what-we-do"
+        className={["relative overflow-hidden scroll-mt-28", whatWeDoSection].join(
+          " "
+        )}
+      >
+        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
+          <div className="grid items-center gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
+            <SectionReveal>
+              <div className="max-w-[34rem]">
+                <div className="inline-flex items-center gap-2 rounded-full bg-[#2f60d5] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-white shadow-[0_16px_34px_-18px_rgba(47,96,213,0.95)]">
+                  <span className="h-2 w-2 rounded-full bg-white" />
+                  WHAT WE DO
+                </div>
+                <h2 className="mt-7 max-w-[31rem] text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-5xl">
+                  Job hunting shouldn&apos;t feel like a full-time job.
+                </h2>
+                <p className="mt-5 max-w-[28rem] text-sm leading-7 text-white/76 sm:text-[15px]">
+                  You apply to dozens, sometimes hundreds, of jobs and hear back
+                  from almost none. It&apos;s repetitive, time-consuming, and
+                  frustrating.
+                </p>
+                <p className="mt-2 text-sm font-semibold text-white sm:text-[15px]">
+                  It&apos;s not you. It&apos;s the process.
+                </p>
+              </div>
+            </SectionReveal>
+
+            <SectionReveal delay={0.08}>
+              <div className="relative flex justify-center lg:justify-end">
+                <img
+                  src="/what-we-do-image.png"
+                  alt="What we do illustration"
+                  className="max-w-full h-auto rounded-xl shadow-lg"
+                  style={{ maxWidth: 420 }}
+                />
+              </div>
+            </SectionReveal>
+          </div>
+
+          <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {whatWeDo.map((item, index) => (
+              <SectionReveal key={item.title} delay={index * 0.06}>
+                <FeatureCard item={item} dark={dark} />
+              </SectionReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section
+        className={["relative overflow-hidden", howItWorksSection].join(" ")}
+      >
+        <SectionReveal>
+          <HowItWorksSection />
+        </SectionReveal>
+      </section>
+
+      <section id="testimonials" className="hidden">
+        <div className="w-full scroll-mt-28 py-16 lg:py-24">
+          <SectionReveal>
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
+              <div className="max-w-xl">
+                <div className="inline-flex items-center rounded-full border border-white/12 bg-white/8 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-white">
+                  Testimonials
+                </div>
+                <h2 className="mt-8 text-3xl font-semibold tracking-tight text-white sm:text-5xl">
+                  What people are saying about Applyloop
+                </h2>
+              </div>
+            </div>
+          </SectionReveal>
+
+          <div className="mt-10 w-full space-y-4 sm:mt-12">
+            <TestimonialRow items={topRow} duration={36} direction="rtl" />
+            <TestimonialRow items={bottomRow} duration={40} direction="ltr" />
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="about-us"
+        className={dark ? "bg-[#08162f] text-white" : "bg-[#102856] text-white"}
+      >
+        <div className="mx-auto max-w-7xl scroll-mt-28 px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
+          <SectionReveal>
+            <div className="mx-auto max-w-5xl text-center">
+              <h2 className="text-3xl font-semibold tracking-tight sm:text-5xl">
+                About Us
+              </h2>
+              <p className="mx-auto mt-8 max-w-4xl text-lg font-medium leading-[1.5] tracking-tight text-white/76 sm:text-[1.45rem] lg:text-[2.1rem]">
+                Finding the right job today takes strategy, consistency, and
+                time most people simply don&apos;t have.{" "}
+                <span className="font-semibold text-white">Applyloop</span>{" "}
+                combines the{" "}
+                <span className="font-semibold text-white">speed of AI</span>{" "}
+                with the precision of{" "}
+                <span className="font-semibold text-white">
+                  human expertise
+                </span>
+                .
+              </p>
+            </div>
+          </SectionReveal>
+        </div>
+      </section>
+
+      <section className="bg-[#23439a] text-white">
+        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
+          <SectionReveal>
+            <div className="mx-auto max-w-2xl text-center">
+              <h2 className="text-3xl font-semibold tracking-tight sm:text-5xl">
+                Works For All Industries
+              </h2>
+              <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-white/72">
+                From first application to final offer, ApplyLoop empowers job
+                seekers to succeed faster, smarter, and with confidence.
+              </p>
+            </div>
+          </SectionReveal>
+
+          <div className="mx-auto mt-10 grid max-w-4xl gap-4 md:grid-cols-2">
+            {industryItems.map((item, index) => (
+              <SectionReveal key={item.title} delay={index * 0.04}>
+                <IndustryCard item={item} />
+              </SectionReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="faqs" className={dark ? "bg-[#08162f]" : "bg-[#102856]"}>
+        <div className="mx-auto max-w-7xl scroll-mt-28 px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
+          <SectionReveal>
+            <div className="mx-auto max-w-4xl text-white">
+              <div className="text-sm font-semibold uppercase tracking-[0.08em] text-[#7da8ff]">
+                FAQs
+              </div>
+              <h2 className="mt-3 max-w-xl text-3xl font-semibold tracking-tight sm:text-5xl">
+                Need Answers? Here are some you might need
+              </h2>
+
+              <div className="mt-10 overflow-hidden rounded-[18px]">
+                {faqs.map((item, index) => (
+                  <FAQCard key={item.q} item={item} index={index} />
+                ))}
+              </div>
+            </div>
+          </SectionReveal>
+        </div>
+      </section>
+
+      <section
+        id="ats-review"
+        className={
+          dark ? "bg-[#08162f] text-white" : "bg-[#edf4ff] text-[#12305e]"
+        }
+      >
+        <div className="mx-auto max-w-7xl scroll-mt-28 px-4 py-10 sm:px-6 lg:px-10 lg:py-16">
+          <div className="grid items-start gap-12 lg:grid-cols-[1.05fr_1fr] lg:gap-20">
+            <SectionReveal delay={0.1}>
+              <div
+                className={[
+                  "rounded-[28px] border p-4 shadow-[0_30px_80px_-25px_rgba(59,130,246,0.36)] sm:p-6",
+                  dark
+                    ? "border-white/10 bg-white/[0.04]"
+                    : "border-[#cfddff] bg-white/90",
+                ].join(" ")}
+              >
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+                  <div
+                    className={[
+                      "text-lg font-medium",
+                      dark ? "text-white" : "text-[#12305e]",
+                    ].join(" ")}
+                  >
+                    Application Pipeline
+                  </div>
+                  <div className="w-fit rounded-full bg-emerald-100 px-4 py-2 text-sm font-medium text-emerald-700">
+                    98% ATS Pass Rate
+                  </div>
+                </div>
+
+                <div className="mt-6 space-y-3">
+                  {[
+                    {
+                      role: "Product Manager at Stripe",
+                      status: "AI Parsing...",
+                      icon: FileSearch,
+                      tone: "bg-blue-100 text-blue-700",
+                    },
+                    {
+                      role: "UX Designer at Linear",
+                      status: "Human Review...",
+                      icon: Sparkles,
+                      tone: "bg-violet-100 text-violet-700",
+                    },
+                    {
+                      role: "Frontend Dev at Vercel",
+                      status: "Submitted",
+                      icon: Check,
+                      tone: "bg-emerald-100 text-emerald-700",
+                    },
+                  ].map((row) => {
+                    const Icon = row.icon;
+                    return (
+                      <div
+                        key={row.role}
+                        className={[
+                          "flex flex-col gap-3 rounded-2xl border px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4",
+                          dark
+                            ? "border-white/10 bg-white/[0.03]"
+                            : "border-[#dde7ff] bg-[#f7faff]",
+                        ].join(" ")}
+                      >
+                        <div className="flex min-w-0 items-center gap-3">
+                          <div
+                            className={[
+                              "flex h-9 w-9 shrink-0 items-center justify-center rounded-xl",
+                              row.tone,
+                            ].join(" ")}
+                          >
+                            <Icon className="h-4 w-4" />
+                          </div>
+                          <div
+                            className={[
+                              "truncate text-sm font-medium sm:text-base",
+                              dark ? "text-white" : "text-[#12305e]",
+                            ].join(" ")}
+                          >
+                            {row.role}
+                          </div>
+                        </div>
+                        <div
+                          className={[
+                            "shrink-0 text-xs sm:text-sm",
+                            dark ? "text-white/60" : "text-[#5b77a8]",
+                          ].join(" ")}
+                        >
+                          {row.status}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </SectionReveal>
+
+            <SectionReveal>
+              <h2 className="text-3xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
+                <span className={dark ? "text-white/92" : "text-[#12305e]"}>
+                  Optimized for ATS.
+                </span>
+                <br />
+                <span className="text-[#6ea2ff]">Reviewed by humans.</span>
+              </h2>
+              <p
+                className={[
+                  "mt-8 max-w-xl text-base leading-8",
+                  muted,
+                ].join(" ")}
+              >
+                We don&apos;t just spam job boards. ApplyLoop uses a hybrid
+                model to make every application technologically optimized and
+                contextually precise.
+              </p>
+
+              <div className="mt-10 space-y-6">
+                {[
+                  {
+                    title: "AI Automation",
+                    desc: "Scans job descriptions, extracts keywords, and formats your resume to pass ATS filters.",
+                    icon: Brain,
+                  },
+                  {
+                    title: "Human Quality Control",
+                    desc: "Trained specialists handle complex forms, custom cover letters, and final review.",
+                    icon: Users,
+                  },
+                ].map((feature) => {
+                  const Icon = feature.icon;
+                  return (
+                    <div key={feature.title} className="flex gap-4">
+                      <div className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#1f4fc4] text-white">
+                        <Icon className="h-4 w-4" />
+                      </div>
+                      <div>
+                        <div
+                          className={[
+                            "text-lg font-medium",
+                            dark ? "text-white" : "text-[#12305e]",
+                          ].join(" ")}
+                        >
+                          {feature.title}
+                        </div>
+                        <div
+                          className={[
+                            "mt-1 max-w-xl text-sm leading-7",
+                            muted,
+                          ].join(" ")}
+                        >
+                          {feature.desc}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </SectionReveal>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="become-client"
+        className={dark ? "bg-[#08162f]" : "bg-[#edf4ff]"}
+      >
+        <div className="mx-auto max-w-7xl scroll-mt-28 px-4 pb-16 pt-14 sm:px-6 lg:px-10 lg:pb-20">
+          <SectionReveal>
+            <div className="relative overflow-hidden rounded-[34px] bg-[#2f4278] px-6 py-12 text-white sm:px-12 sm:py-14 lg:px-16 lg:py-16">
+              <CtaDecoration
+                className="left-[18%] top-[18%] rotate-12"
+                tone="bg-[#1f3f8a] text-white"
+              >
+                <Briefcase className="h-4 w-4" />
+              </CtaDecoration>
+              <CtaDecoration
+                className="left-[20%] bottom-[18%] -rotate-12"
+                tone="bg-[#77aaff] text-white"
+              >
+                <ArrowUpRight className="h-4 w-4" />
+              </CtaDecoration>
+              <CtaDecoration
+                className="right-[18%] top-[14%] rotate-[16deg]"
+                tone="bg-white text-[#1f4fc4]"
+              >
+                <Sparkles className="h-4 w-4" />
+              </CtaDecoration>
+
+              <div className="relative z-10 mx-auto max-w-[420px] text-center">
+                <div className="text-sm font-medium text-white/85">
+                  ApplyLoop
+                </div>
+                <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-5xl">
+                  Start landing interviews as soon as you want
+                </h2>
+                <div className="mt-4 text-sm leading-7 text-white/80">
+                  Let us handle your applications while you focus on getting
+                  hired.
+                </div>
+                <div className="mt-8 flex items-center justify-center">
+                  <a
+                    href={SCHEDULE_LINK}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="rounded-full bg-white px-6 py-3 text-sm font-medium text-[#2453c7] transition hover:-translate-y-0.5"
+                  >
+                    Get Started Now
+                  </a>
+                </div>
+              </div>
+            </div>
+          </SectionReveal>
+        </div>
+      </section>
+
+      <footer
+        className={[
+          "relative overflow-hidden border-t border-white/8",
+          footerBg,
+        ].join(" ")}
+      >
+        <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-10 lg:py-20">
           <div className="grid gap-12 lg:grid-cols-2">
-            <div className="text-sm font-medium text-white/90">Apply Loop</div>
+            <a href="#top" className="text-sm font-medium text-white/92">
+              ApplyLoop
+            </a>
             <div className="grid grid-cols-2 gap-4 sm:max-w-sm sm:justify-self-end">
               {footerLinks.map((link) => (
-                <a key={link} href="#" className="text-sm text-white/75 transition hover:text-white">
-                  {link}
+                <a
+                  key={link.label}
+                  href={link.href}
+                  className="text-sm text-white/76 transition hover:text-white"
+                >
+                  {link.label}
                 </a>
               ))}
             </div>
           </div>
+        </div>
 
-          <div className="mt-16 border-t border-white/10 pt-10 lg:mt-24 lg:pt-14">
-            <div className="overflow-hidden text-[18vw] font-semibold leading-none tracking-[-0.08em] text-white/95 lg:text-[12rem]">
-              APPLY LOOP
-            </div>
+        <div className="w-full border-y border-white/10 px-2 py-8 sm:px-4 lg:py-10">
+          <div className="w-full overflow-hidden text-center text-[18vw] font-semibold leading-none tracking-[-0.08em] text-white/95 sm:text-[17vw] lg:text-[13vw]">
+            APPLYLOOP
           </div>
+        </div>
 
-          <div className="mt-10 flex flex-col gap-4 border-t border-white/10 pt-8 text-sm text-white/70 sm:flex-row sm:items-center sm:justify-between">
+        <div className="relative mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-10">
+          <div className="flex flex-col gap-4 text-sm text-white/70 sm:flex-row sm:items-center sm:justify-between">
             <div>Copyright © 2026 all rights reserved.</div>
             <a href="#top" className="inline-flex items-center gap-2 hover:text-white">
               Back to top <ChevronUp className="h-4 w-4" />
             </a>
+          </div>
+
+          <div className="mt-8 flex flex-col gap-3 border-t border-white/10 pt-8 text-[11px] leading-6 text-white/48 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-3xl">
+              Disclaimer: This platform provides guidance, resources, and
+              support to enhance your job search. Securing employment within 30
+              days depends on market conditions, individual effort, and employer
+              decisions.
+            </div>
+            <div className="flex flex-wrap gap-4 text-white/56">
+              <a href="#">Refund Policy</a>
+              <a href="#">Privacy Policy</a>
+              <a href="#">Terms &amp; Conditions</a>
+            </div>
           </div>
         </div>
       </footer>
