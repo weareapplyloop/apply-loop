@@ -68,7 +68,6 @@ type CompanyItem = {
 
 const navLinks = [
   { label: "Services", href: "#what-we-do" },
-  { label: "Testimonials", href: "#testimonials" },
   { label: "About Us", href: "#about-us" },
   { label: "FAQs", href: "#faqs" },
 ];
@@ -76,7 +75,6 @@ const navLinks = [
 const footerLinks = [
   { label: "Home", href: "#top" },
   { label: "Services", href: "#what-we-do" },
-  { label: "Testimonials", href: "#testimonials" },
   { label: "About Us", href: "#about-us" },
   { label: "FAQs", href: "#faqs" },
   { label: "Become a client", href: "#become-client" },
@@ -1019,7 +1017,7 @@ export default function ApplyLoopLandingPage() {
         </SectionReveal>
       </section>
 
-      <section id="testimonials" className={dark ? "bg-[#08162f]" : "bg-[#102856]"}>
+      <section id="testimonials" className="hidden">
         <div className="w-full scroll-mt-28 py-16 lg:py-24">
           <SectionReveal>
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
