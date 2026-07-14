@@ -14,11 +14,23 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.weareapplyloop.com"),
-  title: "ApplyLoop | Spend Less Time Applying",
+  applicationName: "ApplyLoop",
+  title: "ApplyLoop | Resume & Job Application Services",
   description:
     "ApplyLoop combines AI and human expertise to optimize resumes, find matching roles, and submit tailored job applications.",
   alternates: {
     canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
   openGraph: {
     title: "ApplyLoop | Spend Less Time Applying",
@@ -37,6 +49,30 @@ export const metadata: Metadata = {
   },
 };
 
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://www.weareapplyloop.com/#organization",
+  name: "ApplyLoop",
+  alternateName: "Applyloop",
+  url: "https://www.weareapplyloop.com",
+  logo: "https://www.weareapplyloop.com/icon.png",
+  description:
+    "ApplyLoop combines AI and human expertise to optimize resumes, find matching roles, and submit tailored job applications.",
+};
+
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://www.weareapplyloop.com/#website",
+  name: "ApplyLoop",
+  alternateName: "Applyloop",
+  url: "https://www.weareapplyloop.com",
+  publisher: {
+    "@id": "https://www.weareapplyloop.com/#organization",
+  },
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -47,6 +83,18 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationJsonLd),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(websiteJsonLd),
+          }}
+        />
         {children}
       </body>
     </html>
