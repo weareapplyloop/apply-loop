@@ -766,12 +766,21 @@ export default function ApplyLoopLandingPage() {
         ].join(" ")}
         >
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4 sm:px-6 lg:px-10">
-          <a href="#top" className="flex items-center">
+          <a href="#top" className="flex min-w-0 items-center gap-2.5">
             <img
               src="/applyloop-logo.svg"
               alt="ApplyLoop logo"
               className="h-9 w-auto object-contain"
             />
+
+            <span
+              className={[
+                "truncate text-sm font-semibold tracking-[-0.03em]",
+                dark ? "text-white" : "text-[#12305e]",
+              ].join(" ")}
+            >
+              ApplyLoop
+            </span>
           </a>
 
     <nav className="hidden items-center gap-8 md:flex">
