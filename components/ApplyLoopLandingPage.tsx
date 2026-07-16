@@ -68,7 +68,6 @@ type CompanyItem = {
 
 const navLinks = [
   { label: "Services", href: "#what-we-do" },
-  { label: "Testimonials", href: "#testimonials" },
   { label: "About Us", href: "#about-us" },
   { label: "FAQs", href: "#faqs" },
 ];
@@ -76,7 +75,6 @@ const navLinks = [
 const footerLinks = [
   { label: "Home", href: "#top" },
   { label: "Services", href: "#what-we-do" },
-  { label: "Testimonials", href: "#testimonials" },
   { label: "About Us", href: "#about-us" },
   { label: "FAQs", href: "#faqs" },
   { label: "Become a client", href: "#become-client" },
